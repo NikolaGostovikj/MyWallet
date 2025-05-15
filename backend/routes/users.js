@@ -5,14 +5,14 @@ const DB = require('../db/dbConn.js')
 //Checks if user submitted both fields, if user exist and if the combination of user and password matches
 users.post('/login', async (req, res) => {
 //
-    var username = req.body.username;
+    var email = req.body.email;
     var password = req.body.password;
-    if (username && password) {
+    if (email && password) {
         try {
-            let queryResult = await DB.AuthUser(username);
+            let queryResult = await DB.AuthUser(email);
 
             if (queryResult.length > 0) {
-                if (password === queryResult[0].user_password) {
+                if (password === queryResult[0].password) {
                     console.log(queryResult)
                     console.log("LOGIN OK");
                     req.session.logged_in = true;
@@ -86,7 +86,46 @@ users.get('/session', async (req, res, next)=>{
  
 
 
-// Inserts a new user in our database
+//Inserts one new item to the database
+users.post('/register', async (req, res, next) => {
+
+    let userId = req.body.userId;
+    let name = req.body.name;
+    let lastname = req.body.lastname;
+    let password = req.body.password;
+    let email = req.body.email;
+    let amount = req.body.amount;
+    let role = req.body.role;
+
+
+    var isComplete = userId && name && lastname && password && email && amount && role;
+    if (isComplete) {
+        try {
+        
+                var queryResult = await DB.registerUser(userId,name,lastname,password,email,amount,role);
+                if (queryResult.affectedRows) {
+                    console.log("New article added!!")
+                    res.json({status:{success: true, msg: "News item added!"}})
+                }
+            
+            }  
+           
+
+            
+        catch (err) {
+            console.log(err)
+            res.sendStatus(500)
+        }
+    }
+    else {
+        console.log("A field is empty!")
+        res.json({status:{success: false, msg: "A field is empty!"}})
+        }
+    res.end()
+
+
+})
+
 
 
 module.exports = users

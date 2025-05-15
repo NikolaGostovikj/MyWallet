@@ -5,7 +5,7 @@ const conn = mysql.createConnection({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASS,
-  database: 'Qcodeigniter',
+  database: 'SISIII2025_89231044',
 })
 
 conn.connect((err) => {
@@ -18,7 +18,7 @@ conn.connect((err) => {
 
 
 let dataPool = {}
-
+/*
 dataPool.allNovice = () => {
   return new Promise((resolve, reject) => {
     conn.query(`SELECT * FROM news`, (err, res) => {
@@ -27,17 +27,26 @@ dataPool.allNovice = () => {
     })
   })
 }
-
-
-dataPool.allUsers = () => {
+*/
+dataPool.registerUser = (userId,name,lastname,password,email,amount,role) => {
   return new Promise((resolve, reject) => {
-    conn.query(`SELECT user_name FROM user_login`, (err, res) => {
+    conn.query(`INSERT INTO users (user_id,name,lastname,password,email,amount,role) VALUES (?,?,?,?,?,?,?)`, [userId,name,lastname,password,email,amount,role], (err, res) => {
       if (err) { return reject(err) }
       return resolve(res)
     })
   })
 }
 
+dataPool.allUsers = () => {
+  return new Promise((resolve, reject) => {
+    conn.query(`SELECT user_id, name, lastname FROM users`, (err, res) => {
+      if (err) { return reject(err) }
+      return resolve(res)
+    })
+  })
+}
+
+/*
 dataPool.oneNovica = (id) => {
   return new Promise((resolve, reject) => {
     conn.query(`SELECT * FROM news WHERE id = ?`, id, (err, res) => {
@@ -75,9 +84,11 @@ dataPool.updateNovica = (title, slug, text, id) => {
   })
 }
 
-dataPool.AuthUser = (username) => {
+*/ 
+
+dataPool.AuthUser = (email) => {
   return new Promise((resolve, reject) => {
-    conn.query('SELECT * FROM user_login WHERE user_name = ?', username, (err, res, fields) => {
+    conn.query('SELECT * FROM users WHERE email = ?', email, (err, res, fields) => {
       if (err) { return reject(err) }
       return resolve(res)
     })
