@@ -46,15 +46,89 @@ dataPool.allUsers = () => {
   })
 }
 
-/*
-dataPool.oneNovica = (id) => {
-  return new Promise((resolve, reject) => {
-    conn.query(`SELECT * FROM news WHERE id = ?`, id, (err, res) => {
-      if (err) { return reject(err) }
+//Lists all Expenses for a given user
+dataPool.allExpenses = (id,email) => {
+return new Promise((resolve, reject) => {
+  conn.query(`SELECT E.description, E.amount, E.storename, E.date_time, E.category 
+      FROM expense E 
+      JOIN users U ON E.user_id = U.user_id 
+      WHERE E.user_id = ? AND U.email = ?`
+    , [id,email], (err,res) => {
+      if (err) {return reject(err)}
       return resolve(res)
     })
   })
 }
+//Lists all Expenses in this month
+dataPool.allMonthlyExpenses = (id,email) => {
+return new Promise((resolve, reject) => {
+  conn.query(`SELECT E.description, E.amount, E.storename, E.date_time, E.category 
+      FROM expense E 
+      JOIN users U ON E.user_id = U.user_id A 
+      WHERE E.user_id = ? AND U.email = ?
+      AND MONTH(E.date_time) = MONTH(CURRENT_DATE()) 
+      AND YEAR(E.date_time) = YEAR(CURRENT_DATE())`
+    , [id,email], (err,res) => {
+      if (err) {return reject(err)}
+      return resolve(res)
+    })
+  })
+}
+//Lists all Expenses for a given user
+dataPool.allIncome = (id,email) => {
+return new Promise((resolve, reject) => {
+  conn.query(`SELECT I.name, I.amount, I.date_time,  
+      FROM income I 
+      JOIN users U ON I.user_id = U.user_id A 
+      WHERE I.user_id = ? AND U.email = ?`
+    , [id,email], (err,res) => {
+      if (err) {return reject(err)}
+      return resolve(res)
+    })
+  })
+}
+//Lists all income in this month NE ZABORAVAJ DA GO STAVISH VO SEMINARSKATA
+dataPool.allMonthlyIncome = (id,email) => {
+return new Promise((resolve, reject) => {
+  conn.query(`SELECT I.name, I.amount, I.date_time,  
+      FROM income I 
+      JOIN users U ON I.user_id = U.user_id A 
+      WHERE I.user_id = ? AND U.email = ?
+      AND MONTH(I.date_time) = MONTH(CURRENT_DATE()) 
+      AND YEAR(I.date_time) = YEAR(CURRENT_DATE())`
+    , [id,email], (err,res) => {
+      if (err) {return reject(err)}
+      return resolve(res)
+    })
+  })
+}
+
+dataPool.currentAmount = (id,email) => {
+return new Promise((resolve,reject) => {
+   conn.query(``
+    , [id,email], (err,res) => {
+      if (err) {return reject(err)}
+      return resolve(res)
+    })
+})
+}
+
+dataPool.allMonthlyGoals = (id,email) => {
+return new Promise((resolve, reject) => {
+  conn.query(`SELECT G.name, G.progress_amount, G.target_amount,  
+      FROM goal G 
+      JOIN users U ON G.user_id = U.user_id A 
+      WHERE G.user_id = ? AND U.email = ?
+      AND MONTH(G.date_time) = MONTH(CURRENT_DATE()) 
+      AND YEAR(G.date_time) = YEAR(CURRENT_DATE())`
+    , [id,email], (err,res) => {
+      if (err) {return reject(err)}
+      return resolve(res)
+    })
+  })
+}
+
+/*
 
 dataPool.deleteNovica = (id) => {
   return new Promise((resolve, reject) => {
@@ -65,15 +139,6 @@ dataPool.deleteNovica = (id) => {
   })
 }
 
-
-dataPool.creteNovica = (title, slug, text, file) => {
-  return new Promise((resolve, reject) => {
-    conn.query(`INSERT INTO news (title,slug,text,file) VALUES (?,?,?,?)`, [title, slug, text, file], (err, res) => {
-      if (err) { return reject(err) }
-      return resolve(res)
-    })
-  })
-}
 
 dataPool.updateNovica = (title, slug, text, id) => {
   return new Promise((resolve, reject) => {
