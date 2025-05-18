@@ -20,6 +20,24 @@ conn.connect((err) => {
 let dataPool = {}
 
 
+dataPool.addStore = (location,name) => {
+  return new Promise((resolve,reject) => {
+    conn.query(`INSERT INTO store  (location,name) = (?,?)`,[location,name], (err,res) => {
+      if (err) {return reject(err)}
+      return resolve(res)
+    })
+  })
+}
+
+dataPool.addItem = (storeId,name,category,price) => {
+  return new Promise((resolve,reject) => {
+    conn.query(`INSERT INTO item (store_id,name,category,price) = (?,?,?,?)`,[storeId,name,category,price],(err,res)=>{
+      if(err) {return reject(err)}
+      return resolve(res)
+    })
+  })
+}
+
 dataPool.findUser = (userId,name,lastname,email) => {
   return new Promise((resolve,reject) => {
     conn.query(`SELECT user_id,name,lastname,email,
