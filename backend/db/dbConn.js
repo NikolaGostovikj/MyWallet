@@ -18,16 +18,18 @@ conn.connect((err) => {
 
 
 let dataPool = {}
-/*
-dataPool.allNovice = () => {
-  return new Promise((resolve, reject) => {
-    conn.query(`SELECT * FROM news`, (err, res) => {
-      if (err) { return reject(err) }
-      return resolve(res)
-    })
+
+
+dataPool.findUser = (userId,name,lastname,email) => {
+  return new Promise((resolve,reject) => {
+    conn.query(`SELECT user_id,name,lastname,email,
+      FROM users WHERE user_id = ? AND name = ?
+      AND lastname = ? AND email = ?`,[userId,name,lastname,email], (err,res) => {
+        if (err) {return reject(err)}
+        return resolve(res)
+      })
   })
 }
-*/
 dataPool.registerUser = (userId,name,lastname,password,email,amount,role) => {
   return new Promise((resolve, reject) => {
     conn.query(`INSERT INTO users (user_id,name,lastname,password,email,amount,role) VALUES (?,?,?,?,?,?,?)`, [userId,name,lastname,password,email,amount,role], (err, res) => {
@@ -102,6 +104,23 @@ return new Promise((resolve, reject) => {
     })
   })
 }
+dataPool.addIncome = (userId,amount,name) => {
+  return new Promise((resolve,reject) => {
+    conn.query(`INSERT INTO income (user_id,amount,name) = (?,?,?)`,[userId,amount,name], (err,res)=>{
+      if(err) {return reject(err)}
+      return resolve(res);
+    })
+  })
+}
+dataPool.addExpense = (userId,storeId,amount,name,description,category) => {
+  return new Promise((resolve,reject) => {
+    conn.query(`INSERT INTO expense (user_id,store_id,amount,storename,description,category) = (?,?,?,?,?,?)`,[userId,storeId,amount,name,description,category], (err,res)=>{
+      if(err) {return reject(err)}
+      return resolve(res);
+    })
+  })
+}
+
 
 dataPool.currentAmount = (id,email) => {
 return new Promise((resolve,reject) => {
@@ -127,29 +146,6 @@ return new Promise((resolve, reject) => {
     })
   })
 }
-
-/*
-
-dataPool.deleteNovica = (id) => {
-  return new Promise((resolve, reject) => {
-    conn.query(`DELETE FROM news WHERE id = ?`, id, (err, res) => {
-      if (err) { return reject(err) }
-      return resolve(res)
-    })
-  })
-}
-
-
-dataPool.updateNovica = (title, slug, text, id) => {
-  return new Promise((resolve, reject) => {
-    conn.query(`UPDATE news SET title = ?, slug = ?, text = ? WHERE id = ?`, [title, slug, text, id], (err, res) => {
-      if (err) { return reject(err) }
-      return resolve(res)
-    })
-  })
-}
-
-*/ 
 
 dataPool.AuthUser = (email) => {
   return new Promise((resolve, reject) => {
