@@ -5,7 +5,10 @@ import './loginCss.css';
 function LogIn({onLogin, onRegister}){
     const [password,setPassword] = useState("");
     const [email,setEmail] = useState("");
+    const URL = "http://88.200.63.148:5555/"
+    function login(){
 
+    }
     const handleSubmit = (e) =>{
         e.preventDefault();
         onLogin(email,password);
@@ -36,7 +39,7 @@ function LogIn({onLogin, onRegister}){
             required
             />
 
-            <button className={"button"} type="submit">Sign in</button>
+            <button className={"button"} type="submit" onClick={login}>Sign in</button>
 
 
             <button
