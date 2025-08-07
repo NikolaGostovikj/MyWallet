@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import './loginCss.css'; 
 
 
-function LogIn({onLogin, onRegister}){
+function LogIn({onRegister}){
     const [password,setPassword] = useState("");
     const [email,setEmail] = useState("");
     const URL = "http://88.200.63.148:5550/"
@@ -15,7 +15,9 @@ function LogIn({onLogin, onRegister}){
         const result = await response.json();
         console.log(result);
     }
-   
+    async function onRegister(){
+        
+    }
 
     return(<div className ={"container"}>
     
