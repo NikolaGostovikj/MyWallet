@@ -5,18 +5,21 @@ import './loginCss.css';
 function LogIn({onLogin, onRegister}){
     const [password,setPassword] = useState("");
     const [email,setEmail] = useState("");
-    const URL = "http://88.200.63.148:5555/"
-    function login(){
+    const URL = "http://88.200.63.148:5550/"
 
-    }
-    const handleSubmit = (e) =>{
+    async function login(e){
         e.preventDefault();
-        onLogin(email,password);
+        const response = await fetch(`${URL}users/login`,{method:"POST",
+            headers: {"Content-Type": "application/json"},
+            body:JSON.stringify({email:email,password:password})})
+        const result = await response.json();
+        console.log(result);
     }
+   
 
     return(<div className ={"container"}>
     
-        <form className = {"form"} onSubmit={handleSubmit}>
+        <form className = {"form"} onSubmit={login}>
             <div className="welcome">
                 <h1>Welcome to MyWallet</h1>
             </div>
@@ -39,7 +42,7 @@ function LogIn({onLogin, onRegister}){
             required
             />
 
-            <button className={"button"} type="submit" onClick={login}>Sign in</button>
+            <button className={"button"} type="submit">Sign in</button>
 
 
             <button
