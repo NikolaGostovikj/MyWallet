@@ -1,14 +1,25 @@
 import React, { useState } from 'react';
 import './bankCss.css'; 
-
+import { useNavigate } from 'react-router-dom';
 function Bank() {
   const [balance, setBalance] = useState(500); // starting money
   const maxBalance = 1000; // max fullness
+  const navigate = useNavigate();
 
-  async function logout(){
+ async function logout() {
+    try {
+      await fetch("http://88.200.63.148:5550/users/logout", {
+        method: "GET",
+        credentials: "include"
+      });
+
+      navigate("/"); // back to login
     
-  }
-  // fullness percentage
+    } catch (err) {
+    console.error("Logout failed", err);
+    }
+}
+
   const fullness = Math.min((balance / maxBalance) * 100, 100);
 
   return (
@@ -23,14 +34,14 @@ function Bank() {
       </div>
 
       <div className="buttons">
-        <button onClick={() => setBalance(balance + 100)}>Add Income</button>
+        <button onClick={() => navigate("/income")}>Add Income</button>
         <button onClick={() => setBalance(Math.max(balance - 50, 0))}>
           Add Expense
         </button>
         <button onClick={() => alert('Goal creation coming soon!')}>
           Create Goal
         </button>
-        <button onClick={logout()}>
+        <button onClick={logout}>
             Logout
         </button>
       </div>

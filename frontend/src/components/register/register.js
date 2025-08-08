@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import { useNavigate } from 'react-router-dom';
 import './registerCss.css';
 
 
@@ -9,6 +10,7 @@ function Register(){
     const [lastname,setLastname] = useState("");
     const [confirm,setConfirm] = useState("");
     const URL = "http://88.200.63.148:5550/"
+    const navigate = useNavigate();
 
     async function register(e){
         e.preventDefault();
@@ -29,15 +31,13 @@ function Register(){
 
         })
         const result = await response.json();
-        if (!resp.ok) {
-           alert(result?.message || "Registration failed");
-           return;
-        }
+        
 
         alert("Account created!");
         console.log(result);
+        navigate("/");
     }
-    
+
 return (
     <div className={"container"}>
       <form className={"form"} onSubmit={register}>
@@ -97,6 +97,7 @@ return (
         <button
           className={"button"}
           type="button"
+          onClick={() => navigate("/")}
         >
           Back to Login
         </button>
