@@ -7,6 +7,7 @@ users.post('/login', async (req, res) => {
 //
     var email = req.body.email;
     var password = req.body.password;
+    
     if (email && password) {
         try {
             let queryResult = await DB.AuthUser(email);
@@ -16,6 +17,8 @@ users.post('/login', async (req, res) => {
                     console.log(queryResult)
                     console.log("LOGIN OK");
                     req.session.logged_in = true;
+                    req.session.user_id = queryResult[0].user_id; 
+                    req.session.email = queryResult[0].email;     
                     res.json({ success: true, message: "LOGIN OK" });
                     res.status(200)
                 }

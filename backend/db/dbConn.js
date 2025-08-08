@@ -122,9 +122,9 @@ return new Promise((resolve, reject) => {
     })
   })
 }
-dataPool.addIncome = (userId,amount,name) => {
+dataPool.addIncome = (userId,amount,name,date) => {
   return new Promise((resolve,reject) => {
-    conn.query(`INSERT INTO income (user_id,amount,name) = (?,?,?)`,[userId,amount,name], (err,res)=>{
+    conn.query(`INSERT INTO income (user_id,amount,name,date_time) VALUES (?,?,?,?)`,[userId,amount,name,date], (err,res)=>{
       if(err) {return reject(err)}
       return resolve(res);
     })
