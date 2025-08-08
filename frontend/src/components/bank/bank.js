@@ -1,56 +1,53 @@
-import React, { useState, useEffect } from 'react';
-import './bankCss.css'; 
-import { useNavigate, useLocation } from 'react-router-dom';
-function Bank() {
-  const [balance, setBalance] = useState(500); // starting money
-  const maxBalance = 1000; // max fullness
+import React, { useEffect, useState } from "react";
+import "./bankCss.css";
+import { useNavigate, useLocation } from "react-router-dom";
+
+const URL = "http://88.200.63.148:5555/";
+
+export default function Bank() {
+  const [user, setUser] = useState(null);
   const navigate = useNavigate();
-  const URL = "http://88.200.63.148:5555/";
   const location = useLocation();
-  const user = location.state.user;
 
+  useEffect(() => {
+    (async () => {
+      try {
+        const s = await fetch(`${URL}users/session`, { credentials: "include" });
+        const sess = await s.json();
+        if (!sess?.logged_in) return navigate("/");
 
- async function logout() {
-    try {
-      await fetch(`${URL}users/logout`, {
-        method: "GET",
-        credentials: "include"
-      });
+        const u = await fetch(`${URL}users/get/${sess.user_id}`, { credentials: "include" });
+        const data = await u.json();
+        setUser(data);
+      } catch (e) {
+        console.error(e);
+      }
+    })();
+  // refetch each time you land on /bank (location.key changes even if the path is the same)
+  }, [location.key, navigate]);
 
-      navigate("/"); // back to login
-    
-    } catch (err) {
-    console.error("Logout failed", err);
-    }
-}
+  async function logout() {
+    await fetch(`${URL}users/logout`, { method: "GET", credentials: "include" });
+    navigate("/");
+  }
 
-  const fullness = Math.min((balance / maxBalance) * 100, 100);
+  const amount = Number(user?.amount || 0);
+  const maxBalance = 1000;
+  const fullness = Math.min((amount / maxBalance) * 100, 100);
 
   return (
     <div className="bank-container">
       <div className="cloud">
-        <div
-          className="money-fill"
-          style={{ height: `${fullness}%` }}
-        >
-          <span className="money-text">${user.amount}</span>
+        <div className="money-fill" style={{ height: `${fullness}%` }}>
+          <span className="money-text">€{amount.toFixed(2)}</span>
         </div>
       </div>
 
       <div className="buttons">
         <button onClick={() => navigate("/income")}>Add Income</button>
-        <button onClick={() => setBalance(Math.max(balance - 50, 0))}>
-          Add Expense
-        </button>
-        <button onClick={() => alert('Goal creation coming soon!')}>
-          Create Goal
-        </button>
-        <button onClick={logout}>
-            Logout
-        </button>
+        <button onClick={() => alert("Goal creation coming soon!")}>Create Goal</button>
+        <button onClick={logout}>Logout</button>
       </div>
     </div>
   );
 }
-
-export default Bank;

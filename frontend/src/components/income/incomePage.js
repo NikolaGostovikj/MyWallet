@@ -1,59 +1,44 @@
-import React,{useState} from 'react';
-import './incomeCss.css';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "./incomeCss.css";
 
-function Income(){
-const [amount,setAmount] = useState("");
-const [name,setName] = useState("");
 const URL = "http://88.200.63.148:5555/";
-async function addIncome(e){
+
+export default function Income() {
+  const [amount, setAmount] = useState("");
+  const [name, setName] = useState("");
+  const navigate = useNavigate();
+
+  async function addIncome(e) {
     e.preventDefault();
-    
-    if(isNaN(amount) || amount<=0){
-      alert('Please add a real number!');
-      return;
-    }
+    const num = Number(amount);
+    if (!Number.isFinite(num) || num <= 0) return alert("Enter a positive number");
 
-    const response = await fetch (`${URL}income/add`,{method:"POST",
-      headers: {"Content-Type": "application/json"},
+    const res = await fetch(`${URL}income/add`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       credentials: "include",
-      body:JSON.stringify({amount:amount,name:name}),
+      body: JSON.stringify({ amount: num, name }),
+    });
 
-    })
-    const result = await response.json();
-    console.log(result);
+    const result = await res.json();
+    if (res.ok && result.success) navigate("/bank"); // Bank will refetch and show the new amount
+    else alert(result.message || "Failed to add income.");
+  }
 
-}
-return (
+  return (
     <div className="income">
-      <form className='form' onSubmit={addIncome}>
+      <form className="form" onSubmit={addIncome}>
         <label>
           Please name your income:
-          <input
-            type="text"
-            className="input"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
+          <input className="input" value={name} onChange={(e) => setName(e.target.value)} required />
         </label>
-
         <label>
           Enter amount:
-          <input
-            type="text"
-            className="input"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-            placeholder="€"
-            required
-          />
+          <input type="number" step="0.01" className="input" value={amount} onChange={(e) => setAmount(e.target.value)} required />
         </label>
-
-        <button type="submit" className="button">Add Income</button>
+        <button className="button" type="submit">Add Income</button>
       </form>
     </div>
   );
-
 }
-
-export default Income;

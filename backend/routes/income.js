@@ -18,11 +18,12 @@ income.post('/add',async (req,res) => {
     if(amount && name){
         try{
             let queryResult = await DB.addIncome(userId,amount,name,dateTime);
-             return res.status(201).json({
-                success: true,
-                message: "Income added.",
-                income_id: queryResult.insertId,
-    });
+            if(queryResult.affectedRows){
+                console.log("Added income to the database");
+            }
+            await DB.incrementUserAmount(userId, amount);
+            const newAmount = await DB.getUserAmount(userId);
+            res.status(201).json({ success:true, message:"Income added.", income_id: queryResult.insertId, newAmount });
         }
         catch(err){
             console.log(err)

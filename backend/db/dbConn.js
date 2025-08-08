@@ -182,6 +182,31 @@ dataPool.AuthUser = (email) => {
   })
 
 }
+dataPool.incrementUserAmount = (userId, delta) => {
+  return new Promise((resolve, reject) => {
+    conn.query(
+      `UPDATE users SET amount = amount + ? WHERE user_id = ?`,
+      [delta, userId],
+      (err, res) => {
+        if (err) { return reject(err) }
+        return resolve(res)
+      }
+    )
+  })
+}
+
+dataPool.getUserAmount = (userId) => {
+  return new Promise((resolve, reject) => {
+    conn.query(
+      `SELECT amount FROM users WHERE user_id = ?`,
+      [userId],
+      (err, rows) => {
+        if (err) { return reject(err) }
+        return resolve(rows?.[0]?.amount ?? null)
+      }
+    )
+  })
+}
 
 module.exports = dataPool;
 
