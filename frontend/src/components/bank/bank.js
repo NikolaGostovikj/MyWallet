@@ -1,14 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './bankCss.css'; 
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 function Bank() {
   const [balance, setBalance] = useState(500); // starting money
   const maxBalance = 1000; // max fullness
   const navigate = useNavigate();
+  const URL = "http://88.200.63.148:5555/";
+  const location = useLocation();
+  const user = location.state.user;
+
 
  async function logout() {
     try {
-      await fetch("http://88.200.63.148:5550/users/logout", {
+      await fetch(`${URL}users/logout`, {
         method: "GET",
         credentials: "include"
       });
@@ -29,7 +33,7 @@ function Bank() {
           className="money-fill"
           style={{ height: `${fullness}%` }}
         >
-          <span className="money-text">${balance}</span>
+          <span className="money-text">${user.amount}</span>
         </div>
       </div>
 

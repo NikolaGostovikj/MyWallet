@@ -4,7 +4,7 @@ import './incomeCss.css';
 function Income(){
 const [amount,setAmount] = useState("");
 const [name,setName] = useState("");
-const URL = "http://88.200.63.148:5550/";
+const URL = "http://88.200.63.148:5555/";
 async function addIncome(e){
     e.preventDefault();
     

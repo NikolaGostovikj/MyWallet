@@ -2,10 +2,10 @@ import React, {useState} from "react";
 import './loginCss.css'; 
 import { useNavigate } from "react-router-dom";
 
-function LogIn({onRegister}){
+function LogIn(){
     const [password,setPassword] = useState("");
     const [email,setEmail] = useState("");
-    const URL = "http://88.200.63.148:5550/"
+    const URL = "http://88.200.63.148:5555/"
     const navigate = useNavigate();
 
    async function login(e) {
@@ -23,7 +23,7 @@ function LogIn({onRegister}){
     console.log(result);
 
     if (result.success) {
-      navigate("/bank");
+      navigate("/bank",{state:{user:result.user}});
     } else {
       alert(result.message || "Login failed. Please try again.");
     }

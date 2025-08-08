@@ -9,7 +9,7 @@ function Register(){
     const [name,setName] = useState("");
     const [lastname,setLastname] = useState("");
     const [confirm,setConfirm] = useState("");
-    const URL = "http://88.200.63.148:5550/"
+    const URL = "http://88.200.63.148:5555/"
     const navigate = useNavigate();
 
     async function register(e){
@@ -18,8 +18,9 @@ function Register(){
             alert('Passwords need to match!');
             return;
         }
-        const response = await fetch(`${URL}users/register`,{method:"POST",
-            headers:{"Content-Type":"application/json"},
+        const response = await fetch(`${URL}users/register`,{ method: "POST",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include", 
             body: JSON.stringify({
                 name: name,
                 lastname: lastname,
