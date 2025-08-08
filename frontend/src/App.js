@@ -6,7 +6,7 @@ import Income from './components/income/incomePage.js';
 function App() {
   return (
     <div>
-      <Income></Income>
+      <Register></Register>
     </div>
   );
 }

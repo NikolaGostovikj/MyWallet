@@ -31,7 +31,7 @@ label {
   font-size: 0.95rem;
   font-weight: bold;
   color: #2f3542;
-  text-align: center;
+ /* text-align: center;*/
 }
 
 .input {
