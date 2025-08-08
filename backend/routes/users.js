@@ -92,7 +92,6 @@ users.get('/session', async (req, res, next)=>{
 //Inserts one new item to the database
 users.post('/register', async (req, res, next) => {
 
-    let userId = req.body.userId;
     let name = req.body.name;
     let lastname = req.body.lastname;
     let password = req.body.password;
@@ -101,11 +100,11 @@ users.post('/register', async (req, res, next) => {
     let role = req.body.role;
 
 
-    var isComplete = userId && name && lastname && password && email && amount && role;
+    var isComplete = name && lastname && password && email && amount && role;
     if (isComplete) {
         try {
         
-                var queryResult = await DB.registerUser(userId,name,lastname,password,email,amount,role);
+                var queryResult = await DB.registerUser(name,lastname,password,email,amount,role);
                 if (queryResult.affectedRows) {
                     console.log("New article added!!")
                     res.json({status:{success: true, msg: "News item added!"}})

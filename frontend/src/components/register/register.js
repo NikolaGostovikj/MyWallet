@@ -17,7 +17,7 @@ function Register(){
             return;
         }
         const response = await fetch(`${URL}users/register`,{method:"POST",
-            headers:{"Content-Type":"application.json"},
+            headers:{"Content-Type":"application/json"},
             body: JSON.stringify({
                 name: name,
                 lastname: lastname,
@@ -28,10 +28,16 @@ function Register(){
 })
 
         })
-        const result = await response.json;
-        console.log(result);
+        const result = await response.json();
+        if (!resp.ok) {
+           alert(result?.message || "Registration failed");
+           return;
+        }
 
+        alert("Account created!");
+        console.log(result);
     }
+    
 return (
     <div className={"container"}>
       <form className={"form"} onSubmit={register}>

@@ -48,9 +48,9 @@ dataPool.findUser = (userId,name,lastname,email) => {
       })
   })
 }
-dataPool.registerUser = (userId,name,lastname,password,email,amount,role) => {
+dataPool.registerUser = (name,lastname,password,email,amount,role) => {
   return new Promise((resolve, reject) => {
-    conn.query(`INSERT INTO users (user_id,name,lastname,password,email,amount,role) VALUES (?,?,?,?,?,?,?)`, [userId,name,lastname,password,email,amount,role], (err, res) => {
+    conn.query(`INSERT INTO users (name,lastname,password,email,amount,role) VALUES (?,?,?,?,?,?,?)`, [userId,name,lastname,password,email,amount,role], (err, res) => {
       if (err) { return reject(err) }
       return resolve(res)
     })
