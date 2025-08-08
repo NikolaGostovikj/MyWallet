@@ -19,7 +19,7 @@ users.post('/login', async (req, res) => {
                     req.session.logged_in = true;
                     req.session.user_id = queryResult[0].user_id; 
                     req.session.email = queryResult[0].email;     
-                    res.json({ success: true, message: "LOGIN OK" });
+                    res.json({ success: true, message: "LOGIN OK", user:queryResult[0] });
                     res.status(200)
                 }
                 else {
@@ -101,6 +101,7 @@ users.post('/register', async (req, res, next) => {
 
 
     var isComplete = name && lastname && password && email && amount && role;
+    console.log(req.body);
     if (isComplete) {
         try {
         
@@ -128,6 +129,16 @@ users.post('/register', async (req, res, next) => {
 
 })
 
-
+users.get('/get/:id', async(req,res) =>{
+    const {id} = req.params;
+    try{
+        var queryResult = await DB.getUser(id);
+        res.json(queryResult[0]);
+        res.status(200);
+    }catch(err){
+        console.log(err)
+        res.sendStatus(500)
+    }
+})
 
 module.exports = users

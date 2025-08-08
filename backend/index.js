@@ -31,18 +31,14 @@ app.use(session({
 //Some configurations
 app.use(express.urlencoded({extended : true}));
 app.use(cors({
-   origin: 'http://localhost:5009',
+   origin: 'http://localhost:3000',
    methods: ['POST', 'PUT', 'GET', 'OPTIONS', 'HEAD', 'DELETE'],
    credentials: true
 }))
 
-// configurations
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(cors({
-  methods: ["GET", "POST"],
-}))
 
+app.use(express.json());              
+app.use(express.urlencoded({extended:true}));
 
 
 

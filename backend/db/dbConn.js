@@ -38,6 +38,14 @@ dataPool.addItem = (storeId,name,category,price) => {
   })
 }
 
+dataPool.getUser = (userId) => {
+  return new Promise((resolve,reject) => {
+    conn.query(`SELECT * FROM users WHERE user_id = ?`,[userId], (err,res)=>{
+      if(err){return reject(err)}
+      return resolve(res)
+    })
+  })
+}
 dataPool.findUser = (userId,name,lastname,email) => {
   return new Promise((resolve,reject) => {
     conn.query(`SELECT user_id,name,lastname,email,
@@ -50,7 +58,7 @@ dataPool.findUser = (userId,name,lastname,email) => {
 }
 dataPool.registerUser = (name,lastname,password,email,amount,role) => {
   return new Promise((resolve, reject) => {
-    conn.query(`INSERT INTO users (name,lastname,password,email,amount,role) VALUES (?,?,?,?,?,?,?)`, [userId,name,lastname,password,email,amount,role], (err, res) => {
+    conn.query(`INSERT INTO users (name,lastname,password,email,amount,role) VALUES (?,?,?,?,?,?)`, [name,lastname,password,email,amount,role], (err, res) => {
       if (err) { return reject(err) }
       return resolve(res)
     })
