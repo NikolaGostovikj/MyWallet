@@ -13,9 +13,7 @@ function Expense() {
   const navigate = useNavigate();
 
   function chooseStore(storeKey) {
-    //setSelected(storeKey);
-    
-    //navigate("/expense"); 
+   
   }
   return (
     <div className="expense-container">

@@ -24,7 +24,7 @@ export default function Bank() {
         console.error(e);
       }
     })();
-  // refetch each time you land on /bank (location.key changes even if the path is the same)
+  
   }, [location.key, navigate]);
 
   async function logout() {
@@ -47,6 +47,7 @@ export default function Bank() {
       <div className="buttons">
         <button onClick={() => navigate("/income")}>Add Income</button>
         <button onClick={()=> navigate("/allIncomes")}>Show Incomes</button>
+        <button onClick={()=> navigate("/expensePage")}>Add Expense</button>
         <button onClick={() => alert("Goal creation coming soon!")}>Create Goal</button>
         <button onClick={logout}>Logout</button>
         
