@@ -1,4 +1,4 @@
-// import dependencies and initialize the express app
+
 const express = require('express')
 require('dotenv').config()
 const app = express()
@@ -6,7 +6,7 @@ const cors = require("cors")
 const path = require('path')
 const port = process.env.PORT || 5555
 
-// import local files
+
 //const novice = require('./routes/novice')
 const users = require('./routes/users')
 const goal = require('./routes/goal')
@@ -20,7 +20,7 @@ const alert = require('./routes/alert')
 
 const session = require('express-session')
 
-app.set('trust proxy', 1) // trust first proxy
+app.set('trust proxy', 1)
 app.use(session({
    secret: 'some secret',
    resave: true,
@@ -28,7 +28,7 @@ app.use(session({
    cookie: { secure: false }
   }))
 
-//Some configurations
+
 app.use(express.urlencoded({extended : true}));
 app.use(cors({
    origin: 'http://localhost:3000',
@@ -42,7 +42,7 @@ app.use(express.urlencoded({extended:true}));
 
 
 
-// actual routes
+
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "build", "index.html"))
 })
@@ -58,5 +58,4 @@ app.use('/expense', expense)
 //app.use('/uploadFile', upload)
 
 
-// start the express server
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))

@@ -48,4 +48,14 @@ income.get('/show',async(req,res)=>{
         }
 });
 
+income.get('/show-monthly', async(req,res)=>{
+    try{
+        const queryResult = await DB.allMonthlyIncome(req.session.user_id,req.session.email);
+        res.json(queryResult)
+
+    }catch(err){
+        console.log(err)
+        res.sendStatus(500)
+    }
+})
 module.exports = income

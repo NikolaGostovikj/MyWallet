@@ -118,9 +118,9 @@ return new Promise((resolve, reject) => {
 //Lists all income in this month NE ZABORAVAJ DA GO STAVISH VO SEMINARSKATA
 dataPool.allMonthlyIncome = (id,email) => {
 return new Promise((resolve, reject) => {
-  conn.query(`SELECT I.name, I.amount, I.date_time,  
+  conn.query(`SELECT I.name, I.amount, I.date_time  
       FROM income I 
-      JOIN users U ON I.user_id = U.user_id A 
+      JOIN users U ON I.user_id = U.user_id  
       WHERE I.user_id = ? AND U.email = ?
       AND MONTH(I.date_time) = MONTH(CURRENT_DATE()) 
       AND YEAR(I.date_time) = YEAR(CURRENT_DATE())`

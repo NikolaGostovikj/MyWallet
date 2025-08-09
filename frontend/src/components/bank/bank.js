@@ -45,8 +45,10 @@ export default function Bank() {
 
       <div className="buttons">
         <button onClick={() => navigate("/income")}>Add Income</button>
+        <button onClick={()=> navigate("/allIncomes")}>Show Incomes</button>
         <button onClick={() => alert("Goal creation coming soon!")}>Create Goal</button>
         <button onClick={logout}>Logout</button>
+        
       </div>
     </div>
   );
