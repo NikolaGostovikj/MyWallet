@@ -14,6 +14,7 @@ export default function Bank() {
       try {
         const s = await fetch(`${URL}users/session`, { credentials: "include" });
         const sess = await s.json();
+        console.log(sess)
         if (!sess?.logged_in) return navigate("/");
 
         const u = await fetch(`${URL}users/get/${sess.user_id}`, { credentials: "include" });
@@ -23,7 +24,7 @@ export default function Bank() {
         console.error(e);
       }
     })();
-  
+  // refetch each time you land on /bank (location.key changes even if the path is the same)
   }, [location.key, navigate]);
 
   async function logout() {
@@ -38,16 +39,14 @@ export default function Bank() {
   return (
     <div className="bank-container">
       <div className="cloud">
-        <div className="money-fill" style={{ height: `${fullness}%` }}>
+        <div className="money-fill" style={{ height: `100%` }}>
           <span className="money-text">€{amount.toFixed(2)}</span>
         </div>
       </div>
 
       <div className="buttons">
         <button onClick={() => navigate("/income")}>Add Income</button>
-        <button onClick={()=>navigate("/expense")}>Add Expense</button>
         <button onClick={()=> navigate("/allIncomes")}>Show Incomes</button>
-        <button onClick={()=> navigate("/allExpenses")}>Show Expenses</button>
         <button onClick={() => alert("Goal creation coming soon!")}>Create Goal</button>
         <button onClick={logout}>Logout</button>
         

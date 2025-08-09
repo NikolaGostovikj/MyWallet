@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import './allIncomesCss.css';
 
-function allIncomes() {
+function AllIncomes() {
   const [incomes, setIncomes] = useState([]);
   const URL = "http://88.200.63.148:5555/";
   const navigate = useNavigate();
@@ -81,4 +80,4 @@ function allIncomes() {
   );
 }
 
-export default allIncomes;
+export default AllIncomes;

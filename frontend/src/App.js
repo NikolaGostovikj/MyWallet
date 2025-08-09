@@ -3,6 +3,7 @@ import LogIn from "./components/login/login.js";
 import Register from "./components/register/register.js";
 import Bank from "./components/bank/bank.js";
 import Income from "./components/income/incomePage.js";
+import AllIncomes from "./components/allIncomes/allIncomes.js";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/bank" element={<Bank />} />
         <Route path="/income" element={<Income />} />
+        <Route path="/allIncomes" element={<AllIncomes />} />
         {/* fallback */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

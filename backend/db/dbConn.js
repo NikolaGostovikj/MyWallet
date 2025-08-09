@@ -103,16 +103,19 @@ return new Promise((resolve, reject) => {
   })
 }
 //Lists all Expenses for a given user
-dataPool.allIncome = (id,email) => {
-return new Promise((resolve, reject) => {
-  conn.query(`SELECT I.name, I.amount, I.date_time,  
-      FROM income I 
-      JOIN users U ON I.user_id = U.user_id A 
-      WHERE I.user_id = ? AND U.email = ?`
-    , [id,email], (err,res) => {
-      if (err) {return reject(err)}
-      return resolve(res)
-    })
+dataPool.allIncome = (id, email) => {
+  return new Promise((resolve, reject) => {
+    conn.query(
+      `SELECT I.name, I.amount, I.date_time
+       FROM income I
+       JOIN users U ON I.user_id = U.user_id
+       WHERE I.user_id = ? AND U.email = ?`,
+      [id, email],
+      (err, res) => {
+        if (err) { return reject(err) }
+        return resolve(res)
+      }
+    )
   })
 }
 //Lists all income in this month NE ZABORAVAJ DA GO STAVISH VO SEMINARSKATA
@@ -209,4 +212,3 @@ dataPool.getUserAmount = (userId) => {
 }
 
 module.exports = dataPool;
-

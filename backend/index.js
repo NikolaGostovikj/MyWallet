@@ -1,4 +1,3 @@
-
 const express = require('express')
 require('dotenv').config()
 const app = express()
@@ -31,7 +30,7 @@ app.use(session({
 
 app.use(express.urlencoded({extended : true}));
 app.use(cors({
-   origin: 'http://localhost:3000',
+   origin: ["http://localhost:3000/", 'http://88.200.63.148:5556'],
    methods: ['POST', 'PUT', 'GET', 'OPTIONS', 'HEAD', 'DELETE'],
    credentials: true
 }))
