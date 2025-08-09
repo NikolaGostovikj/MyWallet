@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import './allIncomesCss.css';
+import './allExpensesCss.css';
 
-function allIncomes() {
-  const [incomes, setIncomes] = useState([]);
+function allExpenses() {
+  const [expenses, setExpenses] = useState([]);
   const URL = "http://88.200.63.148:5555/";
   const navigate = useNavigate();
 
-  async function showAllIncomes(e) {
+  async function showAllExpenses(e) {
     e?.preventDefault();
     try {
-      const response = await fetch(`${URL}income/show`, {
+      const response = await fetch(`${URL}expense/show`, {
         method: "GET",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
@@ -20,11 +20,11 @@ function allIncomes() {
       console.log(result);
 
       if (Array.isArray(result)) {
-        setIncomes(result);
+        setExpenses(result);
       } else if (result?.success === false) {
         alert(result.message || "Failed to load incomes.");
       } else {
-        setIncomes(result || []);
+        setExpenses(result || []);
       }
     } catch (err) {
       console.error("Error loading incomes:", err);
@@ -33,10 +33,10 @@ function allIncomes() {
   }
 
 
-  async function showMonthlyIncomes(e) {
+  async function showMonthlyExpenses(e) {
     e?.preventDefault();
     try {
-      const response = await fetch(`${URL}income/show-monthly`, {
+      const response = await fetch(`${URL}expense/show-monthly`, {
         method: "GET",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
@@ -46,11 +46,11 @@ function allIncomes() {
       console.log(result);
 
       if (Array.isArray(result)) {
-        setIncomes(result);
+        setExpenses(result);
       } else if (result?.success === false) {
         alert(result.message || "Failed to load monthly incomes.");
       } else {
-        setIncomes(result || []);
+        setExpenses(result || []);
       }
     } catch (err) {
       console.error("Error loading monthly incomes:", err);
@@ -60,17 +60,17 @@ function allIncomes() {
 
   return (
     <div className="incomes-container">
-      <div className="showIncomes" onClick={showAllIncomes}>
-        Show All Incomes
+      <div className="showIncomes" onClick={showAllExpenses}>
+        Show All Expenses
       </div>
 
-      <div className="showIncomesMonth" onClick={showMonthlyIncomes}>
-        Show All Incomes this Month
+      <div className="showIncomesMonth" onClick={showMonthlyExpenses}>
+        Show All Expenses this Month
       </div>
 
-      {incomes?.length > 0 && (
+      {expenses?.length > 0 && (
         <ul style={{ marginTop: 16 }}>
-          {incomes.map((it, idx) => (
+          {expenses.map((it, idx) => (
             <li key={idx}>
               <strong>{it.name}</strong> — {it.amount} ({new Date(it.date_time).toLocaleString()})
             </li>
@@ -81,4 +81,4 @@ function allIncomes() {
   );
 }
 
-export default allIncomes;
+export default allExpenses;
