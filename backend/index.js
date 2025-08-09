@@ -22,11 +22,11 @@ const session = require('express-session')
 
 app.set('trust proxy', 1)
 app.use(session({
-   secret: 'some secret',
-   resave: true,
-   saveUninitialized: true,
-   cookie: { secure: false }
-  }))
+    secret: "secret",
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: false }
+}));
 
 
 app.use(express.urlencoded({extended : true}));
