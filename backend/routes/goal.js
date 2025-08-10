@@ -33,4 +33,15 @@ goal.post('/create', async (req,res)=>{
     }
 })
 
+goal.get('/show',async(req,res)=>{
+    try {
+            var queryResult = await DB.allGoal(req.session.user_id,req.session.email);
+            res.json(queryResult)
+        }
+        catch (err) {
+            console.log(err)
+            res.sendStatus(500)
+        }
+});
+
 module.exports = goal

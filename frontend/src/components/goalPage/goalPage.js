@@ -14,6 +14,7 @@ function GoalPage() {
         <button className="button" onClick={() => navigate("/showGoals")}>
           Show Goals
         </button>
+        <button className="button" onClick={()=> navigate("/bank")}>Go Back</button>
       </div>
     </div>
   );

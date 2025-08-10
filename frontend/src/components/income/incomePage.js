@@ -39,6 +39,7 @@ export default function Income() {
         </label>
         <button className="button" type="submit">Add Income</button>
       </form>
+      <button className="button" onClick={()=>navigate("/bank")}>Go Back</button>
     </div>
   );
 }

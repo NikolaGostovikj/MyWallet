@@ -127,6 +127,22 @@ dataPool.allIncome = (id, email) => {
     )
   })
 }
+
+dataPool.allGoal = (id, email) => {
+  return new Promise((resolve, reject) => {
+    conn.query(
+      `SELECT G.name, G.target_amount, G.deadline
+       FROM goal G
+       JOIN users U ON G.user_id = U.user_id
+       WHERE g.user_id = ? AND U.email = ?`,
+      [id, email],
+      (err, res) => {
+        if (err) { return reject(err) }
+        return resolve(res)
+      }
+    )
+  })
+}
 //Lists all income in this month NE ZABORAVAJ DA GO STAVISH VO SEMINARSKATA
 dataPool.allMonthlyIncome = (id,email) => {
 return new Promise((resolve, reject) => {

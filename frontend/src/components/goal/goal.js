@@ -75,7 +75,7 @@ function Goal() {
           Save Goal
         </button>
 
-        <button className="button" type="button" onClick={() => navigate("/bank")}>
+        <button className="button" type="button" onClick={() => navigate("/goalPage")}>
           Cancel
         </button>
       </form>

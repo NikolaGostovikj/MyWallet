@@ -7,7 +7,7 @@ function AllIncomes() {
   const navigate = useNavigate();
 
   async function showAllIncomes(e) {
-    e?.preventDefault();
+    e.preventDefault();
     try {
       const response = await fetch(`${URL}income/show`, {
         method: "GET",
@@ -33,7 +33,7 @@ function AllIncomes() {
 
 
   async function showMonthlyIncomes(e) {
-    e?.preventDefault();
+    e.preventDefault();
     try {
       const response = await fetch(`${URL}income/show-monthly`, {
         method: "GET",
