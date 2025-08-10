@@ -134,7 +134,7 @@ dataPool.allGoal = (id, email) => {
       `SELECT G.name, G.target_amount, G.deadline
        FROM goal G
        JOIN users U ON G.user_id = U.user_id
-       WHERE g.user_id = ? AND U.email = ?`,
+       WHERE G.user_id = ? AND U.email = ?`,
       [id, email],
       (err, res) => {
         if (err) { return reject(err) }

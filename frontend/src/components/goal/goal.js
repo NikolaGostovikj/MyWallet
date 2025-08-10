@@ -30,10 +30,14 @@ function Goal() {
         }),
       });
 
-      const data = await res.json();
-      console.log(data);
-      alert("Goal saved!");
-      navigate("/bank"); 
+      const result = await res.json();
+      console.log(result);
+
+      if(result.success){
+        alert("Goal saved!");
+        navigate("/bank"); 
+      }
+      
     } catch (error) {
       console.error(error);
       alert("Failed to save goal.");
