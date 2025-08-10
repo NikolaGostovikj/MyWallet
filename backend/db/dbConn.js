@@ -29,6 +29,15 @@ dataPool.addStore = (location,name) => {
   })
 }
 
+dataPool.addGoal = (userId,name,targetAmount,date) => {
+  return new Promise((resolve,reject) => {
+    conn.query(`INSERT INTO goal (user_id,name,target_amount,deadline) VALUES (?,?,?,?)`,[userId,name,targetAmount,date],(err,res)=>{
+      if (err) {return reject(err)}
+      return resolve(res)
+    })
+  })
+}
+
 dataPool.addItem = (storeId,name,category,price) => {
   return new Promise((resolve,reject) => {
     conn.query(`INSERT INTO item (store_id,name,category,price) = (?,?,?,?)`,[storeId,name,category,price],(err,res)=>{
