@@ -18,6 +18,7 @@ function ExpensePage() {
           <img src="../../images/mercator.png" alt="Mercator" />
         </div>
       </div>
+      <button onClick={()=>navigate("/bank")}>Go Back</button>
     </div>
   );
   

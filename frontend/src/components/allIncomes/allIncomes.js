@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "./showIncomesCss.css"; // create this new CSS file
+import "./allIncomesCss.css"; 
 
 function AllIncomes() {
   const [incomes, setIncomes] = useState([]);

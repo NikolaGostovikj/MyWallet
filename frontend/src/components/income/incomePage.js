@@ -38,8 +38,8 @@ export default function Income() {
           <input type="number" step="0.01" className="input" value={amount} onChange={(e) => setAmount(e.target.value)} required />
         </label>
         <button className="button" type="submit">Add Income</button>
+        <button className="button" onClick={()=>navigate("/bank")}>Go Back</button>
       </form>
-      <button className="button" onClick={()=>navigate("/bank")}>Go Back</button>
     </div>
   );
 }

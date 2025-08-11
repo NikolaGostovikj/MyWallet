@@ -1,102 +1,57 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import "./allExpensesCss.css";
+import { useNavigate } from "react-router-dom";
+
+const URL = "http://88.200.63.148:5555/";
 
 function AllExpenses() {
   const [expenses, setExpenses] = useState([]);
-  const URL = "http://88.200.63.148:5555/";
   const navigate = useNavigate();
 
-  async function showAllExpenses(e) {
-    e?.preventDefault();
+  async function fetchAllExpenses() {
     try {
-      const response = await fetch(`${URL}expense/show`, {
+      const res = await fetch(`${URL}expense/show`, {
         method: "GET",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
       });
-      const result = await response.json();
-
-      if (Array.isArray(result)) setExpenses(result);
-      else if (result?.success === false) alert(result.message || "Failed to load expenses.");
-      else setExpenses(result || []);
-    } catch (err) {
-      console.error("Error loading expenses:", err);
-      alert("An error occurred. Please try again later.");
+      const data = await res.json();
+      setExpenses(Array.isArray(data) ? data : []);
+    } catch (e) {
+      console.error("Error loading expenses:", e);
+      alert("Failed to load expenses.");
     }
   }
 
-  async function showMonthlyExpenses(e) {
-    e?.preventDefault();
-    try {
-      const response = await fetch(`${URL}expense/show-monthly`, {
-        method: "GET",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-      });
-      const result = await response.json();
-
-      if (Array.isArray(result)) setExpenses(result);
-      else if (result?.success === false) alert(result.message || "Failed to load monthly expenses.");
-      else setExpenses(result || []);
-    } catch (err) {
-      console.error("Error loading monthly expenses:", err);
-      alert("An error occurred. Please try again later.");
-    }
-  }
-
-  const parseList = (s) => {
-    if (!s) return [];
-    try {
-      const arr = JSON.parse(s);
-      return Array.isArray(arr) ? arr : [];
-    } catch {
-      return [];
-    }
-  };
+  useEffect(() => {
+    fetchAllExpenses();
+  }, []);
 
   return (
-    <div className="incomes-container">
-      <div style={{ display: "flex", gap: 12, marginBottom: 12 }}>
-        <button className="button" onClick={showAllExpenses}>Show All Expenses</button>
-        <button className="button" onClick={() => navigate("/bank")}>Back</button>
-      </div>
+    <div className="container">
+      <div className="form">
+        <h1 className="title">Your Expenses</h1>
 
-      {expenses?.length > 0 ? (
-        <table className="items-table" style={{ marginTop: 12 }}>
-          <thead>
-            <tr>
-              <th>Store</th>
-              <th>Description</th>
-              <th>Amount (€)</th>
-              <th>Date</th>
-              <th>Items</th>
-            </tr>
-          </thead>
-          <tbody>
-            {expenses.map((e, idx) => {
-              const items = parseList(e.list);
-              return (
-                <tr key={idx}>
-                  <td>{e.storename}</td>
-                  <td>{e.description || "-"}</td>
-                  <td>{Number(e.amount).toFixed(2)}</td>
-                  <td>{new Date(e.date_time).toLocaleString()}</td>
-                  <td>
-                    {items.length > 0
-                      ? items.map((it) => it.name).join(", ")
-                      : "-"}
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      ) : (
-        <p style={{ marginTop: 16 }}>No expenses found.</p>
-      )}
+        <button className="button" type="button" onClick={() => navigate("/expensePage")}>
+          Back
+        </button>
+
+        {expenses?.length > 0 ? (
+          <ul className="expense-list">
+            {expenses.map((e, idx) => (
+              <li key={idx} className="expense-item">
+                <strong>{e.description}</strong>
+                <span>Amount: €{e.amount}</span>
+                {e.storename && <span>Store: {e.storename}</span>}
+                <span>Date: {new Date(e.date_time).toLocaleDateString()}</span>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>No expenses found.</p>
+        )}
+      </div>
     </div>
   );
 }
-
-export default AllExpenses;
+export default AllExpenses
