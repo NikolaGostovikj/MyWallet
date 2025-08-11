@@ -5,7 +5,7 @@ import './allExpensesCss.css';
 function allExpenses() {
   const [expenses, setExpenses] = useState([]);
   const URL = "http://88.200.63.148:5555/";
-  const navigate = useNavigate();
+
 
   async function showAllExpenses(e) {
     e?.preventDefault();
