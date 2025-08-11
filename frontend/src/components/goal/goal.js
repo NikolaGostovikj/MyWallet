@@ -25,7 +25,7 @@ function Goal() {
         credentials: "include",
         body: JSON.stringify({
           name: name,
-          target_amount: Number(targetAmount),
+          targetAmount: Number(targetAmount),
           deadline: deadline,
         }),
       });
