@@ -12,7 +12,7 @@ expense.post("/add", async (req, res) => {
   const storeId = Number(req.body.store_id);
   const storename = (req.body.storename || '').trim();
   const description = (req.body.description || '').trim() || null;
-  const list = (req.body.list || '').trim(); // JSON string
+  const list = (req.body.list || '').trim(); 
   const dateTime = new Date();
 
   if (!Number.isFinite(amount) || amount <= 0 || !storeId || !storename || !list) {
@@ -20,13 +20,12 @@ expense.post("/add", async (req, res) => {
   }
 
   try {
-    // insert expense (with date_time)
+   
     const queryResult = await DB.addExpense(userId, storeId, amount, storename, description, list, dateTime);
     if (!queryResult.affectedRows) {
       return res.status(500).json({ success: false, message: "Failed to add expense." });
     }
 
-    // decrement balance, then return new amount
     await DB.decrementUserAmount(userId, amount);
     const newAmount = await DB.getUserAmount(userId);
 

@@ -86,7 +86,7 @@ dataPool.allUsers = () => {
 //Lists all Expenses for a given user
 dataPool.allExpenses = (id,email) => {
 return new Promise((resolve, reject) => {
-  conn.query(`SELECT E.description, E.amount, E.storename, E.date_time, E.category 
+  conn.query(`SELECT E.description, E.amount, E.storename, E.date_time, E.list 
       FROM expense E 
       JOIN users U ON E.user_id = U.user_id 
       WHERE E.user_id = ? AND U.email = ?`
@@ -254,10 +254,19 @@ dataPool.getUserAmount = (userId) => {
   })
 }
 
+//Easy to make a query to have a name as a param and search using that
 dataPool.allItemsLidl = () => {
   return new Promise((resolve, reject) => {
     conn.query(
       `SELECT name, category, price FROM item WHERE store_id = 2`,
+      (err, res) => (err ? reject(err) : resolve(res))
+    );
+  });
+};
+dataPool.allItemsMercator = () => {
+  return new Promise((resolve, reject) => {
+    conn.query(
+      `SELECT name, category, price FROM item WHERE store_id = 1`,
       (err, res) => (err ? reject(err) : resolve(res))
     );
   });

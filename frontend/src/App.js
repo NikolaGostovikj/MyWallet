@@ -10,6 +10,7 @@ import ShowGoals from "./components/showGoals/showGoals.js";
 import ExpensePage from "./components/expense/expensePage.js";
 import AllExpenses from './components/allExpenses/allExpenses.js'
 import Lidl from './components/lidl/lidl.js';
+import Mercator from "./components/mercator/mercator.js";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route path="/expensePage" element={<ExpensePage/>}/>
         <Route path="/allExpenses" element={<AllExpenses/>}/>
         <Route path="/lidl" element={<Lidl/>}/>
+        <Route path="/mercator" element={<Mercator/>}/>
 
         {/* fallback */}
         <Route path="*" element={<Navigate to="/" replace />} />
