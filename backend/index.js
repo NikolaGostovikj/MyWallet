@@ -1,3 +1,4 @@
+const conn = require("./db/conn.js")
 const express = require('express')
 require('dotenv').config()
 const app = express()
@@ -45,6 +46,28 @@ app.use(express.urlencoded({extended:true}));
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "build", "index.html"))
 })
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "build", "index.html"))
+})
+
+app.get("/health", async (req, res) => {
+    function checkDatabaseConnection() {
+        return new Promise((resolve, reject) => {
+            conn.query("SELECT 1", (err, res) => {
+                if (err) return reject(err);
+                resolve(res);
+            });
+        });
+    }
+
+    try {
+        await checkDatabaseConnection();
+        res.status(200).send("DB is OK");
+    } catch (err) {
+        console.error("DB is not healthy:", err.message);
+        res.status(500).send("Not healthy");
+    }
+})
 
 //app.use('/novice', novice)
 app.use('/users', users)
@@ -58,3 +81,6 @@ app.use('/expense', expense)
 
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+app.get(/(.*)/, (req, res) => {
+    res.sendFile(path.join(__dirname, "build", "index.html"));
+});
