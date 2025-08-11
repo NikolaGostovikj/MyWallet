@@ -71,3 +71,41 @@ body {
 .buttons button:hover {
   background-color: #2f3ed4;
 }
+.popup-alert {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  border-radius: 8px;
+  padding: 1rem 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  z-index: 1000;
+  max-width: 320px;
+  text-align: center;
+}
+
+.popup-alert.warning {
+  border-left: 6px solid #ff9800;
+}
+
+.popup-alert.success {
+  border-left: 6px solid #4caf50;
+}
+
+.popup-alert p {
+  margin: 0 0 0.5rem;
+}
+
+.popup-alert button {
+  background: #3742fa;
+  color: white;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.popup-alert button:hover {
+  background: #2f3ed4;
+}

@@ -272,4 +272,33 @@ dataPool.allItemsMercator = () => {
   });
 };
 
+dataPool.addAlert = (userId, message, type = "info", status = "new") => {
+  return new Promise((resolve, reject) => {
+    conn.query(
+      `INSERT INTO alert (user_id, message, type, timestamp, status)
+       VALUES (?, ?, ?, NOW(), ?)`,
+      [userId, message, type, status],
+       (err, res) => {
+        if (err) { return reject(err) }
+        return resolve(res)
+      }
+    );
+  });
+};
+
+dataPool.goalsByUserId = (userId) => {
+  return new Promise((resolve, reject) => {
+    conn.query(
+      `SELECT name, target_amount, deadline
+       FROM goal
+       WHERE user_id = ?`,
+      [userId],
+      (err, res) => {
+        if (err) { return reject(err) }
+        return resolve(res)
+      }
+    );
+  });
+};
+
 module.exports = dataPool;
