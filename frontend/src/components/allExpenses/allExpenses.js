@@ -58,9 +58,8 @@ function AllExpenses() {
   return (
     <div className="incomes-container">
       <div style={{ display: "flex", gap: 12, marginBottom: 12 }}>
-        <button className="button" onClick={() => navigate("/bank")}>Back</button>
         <button className="button" onClick={showAllExpenses}>Show All Expenses</button>
-        <button className="button" onClick={showMonthlyExpenses}>Show Expenses this Month</button>
+        <button className="button" onClick={() => navigate("/bank")}>Back</button>
       </div>
 
       {expenses?.length > 0 ? (

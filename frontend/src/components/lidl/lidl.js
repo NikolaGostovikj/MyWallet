@@ -85,7 +85,7 @@ function Lidl() {
       <div className="form">
         <h1 className="title">Lidl – Items</h1>
 
-        <button className="button" type="button" onClick={() => navigate("/")}>
+        <button className="button" type="button" onClick={() => navigate("/bank")}>
           Back
         </button>
 
