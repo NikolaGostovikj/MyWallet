@@ -11,11 +11,11 @@ function ExpensePage() {
 
       <div className="stores-grid">
         <div className="store-option" onClick={() => navigate("/lidl")}>
-          <img src="../../images/lidl.png" alt="Lidl" />
+          <img src="../../images/lidl.jpg" alt="Lidl" />
         </div>
 
         <div className="store-option" onClick={() => navigate("/mercator")}>
-          <img src="../../images/mercator.png" alt="Mercator" />
+          <img src="../../images/mercator.jpg" alt="Mercator" />
         </div>
       </div>
       <button  className="button" onClick={()=>navigate("/bank")}>Go Back</button>

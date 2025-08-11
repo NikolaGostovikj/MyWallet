@@ -90,34 +90,37 @@ function Lidl() {
         </button>
 
         {items.length > 0 ? (
-          <table className="items-table">
-            <thead>
-              <tr>
-                <th>Category</th>
-                <th>Name</th>
-                <th>Price (€)</th>
-              </tr>
-            </thead>
-            <tbody>
-              {items.map((item, idx) => {
-                const active = selected.includes(item);
-                return (
-                  <tr
-                    key={idx}
-                    onClick={() => toggleSelect(item)}
-                    className={active ? "active" : ""}
-                  >
-                    <td>{item.category}</td>
-                    <td>{item.name}</td>
-                    <td>{parseFloat(item.price).toFixed(2)}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        ) : (
-          <p>No items found.</p>
-        )}
+  <div className="table-scroll">
+    <table className="items-table">
+      <thead>
+        <tr>
+          <th>Category</th>
+          <th>Name</th>
+          <th>Price (€)</th>
+        </tr>
+      </thead>
+      <tbody>
+        {items.map((item, idx) => {
+          const active = selected.includes(item);
+          return (
+            <tr
+              key={idx}
+              onClick={() => toggleSelect(item)}
+              className={active ? "active" : ""}
+            >
+              <td>{item.category}</td>
+              <td>{item.name}</td>
+              <td>{parseFloat(item.price).toFixed(2)}</td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
+  </div>
+) : (
+  <p>No items found.</p>
+)}
+
 
         <div className="summary">
           <strong>Total amount spent:</strong> € {total}
