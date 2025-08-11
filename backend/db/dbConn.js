@@ -1,5 +1,4 @@
 const conn = require("./conn.js");
-const mysql = require('mysql2');
 
 
 

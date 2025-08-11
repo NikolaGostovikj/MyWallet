@@ -46,9 +46,7 @@ app.use(express.urlencoded({extended:true}));
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "build", "index.html"))
 })
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "build", "index.html"))
-})
+
 
 app.get("/health", async (req, res) => {
     function checkDatabaseConnection() {

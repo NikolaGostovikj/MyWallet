@@ -18,7 +18,8 @@ users.post('/login', async (req, res) => {
                     console.log("LOGIN OK");
                     req.session.logged_in = true;
                     req.session.user_id = queryResult[0].user_id; 
-                    req.session.email = queryResult[0].email;     
+                    req.session.email = queryResult[0].email; 
+                    req.session.role = queryResult[0].role;     
                     res.json({ success: true, message: "LOGIN OK", user:queryResult[0] });
                     res.status(200)
                 }
