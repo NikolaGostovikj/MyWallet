@@ -6,6 +6,8 @@ const URL = "http://88.200.63.148:5555/";
 
 export default function Bank() {
   const [user, setUser] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [allUsers, setAllUsers] = useState([]);
   const [alertMessage, setAlertMessage] = useState(null);
   const [alertType, setAlertType] = useState(null);
   const navigate = useNavigate();
@@ -14,15 +16,27 @@ export default function Bank() {
   useEffect(() => {
     (async () => {
       try {
+       
         const s = await fetch(`${URL}users/session`, { credentials: "include" });
         const sess = await s.json();
+
         if (!sess?.logged_in) return navigate("/");
 
+        setIsAdmin(sess?.role === "admin");
+
+        
         const u = await fetch(`${URL}users/get/${sess.user_id}`, { credentials: "include" });
         const data = await u.json();
         setUser(data);
 
-       
+        
+        if (sess?.role === "admin") {
+          const resp = await fetch(`${URL}users/list`, { credentials: "include" });
+          const list = await resp.json();
+          setAllUsers(Array.isArray(list) ? list : []);
+        }
+
+        
         const alertRes = await fetch(`${URL}alert/check-bank`, {
           method: "POST",
           credentials: "include",
@@ -48,7 +62,7 @@ export default function Bank() {
 
   return (
     <div className="bank-container">
-      {/*Alert*/}
+      {/* Alert */}
       {alertMessage && (
         <div className={`popup-alert ${alertType}`}>
           <p>{alertMessage}</p>
@@ -61,6 +75,25 @@ export default function Bank() {
           <span className="money-text">€{amount.toFixed(2)}</span>
         </div>
       </div>
+
+      {/* Admin-only section */}
+      {isAdmin && (
+        <div className="admin-panel">
+          <p><strong>Hello, admin{user?.name ? ` ${user.name}` : ""}!</strong></p>
+          <h3>All users</h3>
+          {allUsers.length === 0 ? (
+            <p>No users found.</p>
+          ) : (
+            <ul className="admin-user-list">
+              {allUsers.map((u) => (
+                <li key={u.user_id}>
+                  <span>{u.name} {u.lastname}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )}
 
       <div className="buttons">
         <button onClick={() => navigate("/income")}>Add Income</button>
