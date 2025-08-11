@@ -166,14 +166,20 @@ dataPool.addIncome = (userId,amount,name,date) => {
     })
   })
 }
-dataPool.addExpense = (userId,storeId,amount,name,description,category) => {
-  return new Promise((resolve,reject) => {
-    conn.query(`INSERT INTO expense (user_id,store_id,amount,storename,description,category) = (?,?,?,?,?,?)`,[userId,storeId,amount,name,description,category], (err,res)=>{
-      if(err) {return reject(err)}
-      return resolve(res);
-    })
+dataPool.addExpense = (userId, storeId, amount, name, description, list, date) => {
+  return new Promise((resolve, reject) => {
+    conn.query(
+      `INSERT INTO expense (user_id, store_id, amount, storename, description, date_time, list)
+       VALUES (?,?,?,?,?,?,?)`,
+      [userId, storeId, amount, name, description, date, list],
+      (err, res) => {
+        if (err) { return reject(err) }
+        return resolve(res)
+      }
+    )
   })
 }
+
 
 
 dataPool.currentAmount = (id,email) => {
@@ -222,6 +228,18 @@ dataPool.incrementUserAmount = (userId, delta) => {
     )
   })
 }
+dataPool.decrementUserAmount = (userId, delta) => {
+  return new Promise((resolve, reject) => {
+    conn.query(
+      `UPDATE users SET amount = amount - ? WHERE user_id = ?`,
+      [delta, userId],
+      (err, res) => {
+        if (err) { return reject(err) }
+        return resolve(res)
+      }
+    )
+  })
+}
 
 dataPool.getUserAmount = (userId) => {
   return new Promise((resolve, reject) => {
@@ -235,5 +253,14 @@ dataPool.getUserAmount = (userId) => {
     )
   })
 }
+
+dataPool.allItemsLidl = () => {
+  return new Promise((resolve, reject) => {
+    conn.query(
+      `SELECT name, category, price FROM item WHERE store_id = 2`,
+      (err, res) => (err ? reject(err) : resolve(res))
+    );
+  });
+};
 
 module.exports = dataPool;
