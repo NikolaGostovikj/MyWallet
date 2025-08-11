@@ -301,4 +301,14 @@ dataPool.goalsByUserId = (userId) => {
   });
 };
 
+dataPool.deleteGoalById = (userId, goalId) => {
+  return new Promise((resolve, reject) => {
+    conn.query(
+      `DELETE FROM goal WHERE goal_id = ? AND user_id = ?`,
+      [goalId, userId],
+      (err, res) => (err ? reject(err) : resolve(res))
+    );
+  });
+};
+
 module.exports = dataPool;
