@@ -1,11 +1,10 @@
-const conn = require("./db/conn.js")
 const express = require('express')
 require('dotenv').config()
 const app = express()
 const cors = require("cors")
 const path = require('path')
 const port = process.env.PORT || 5555
-
+const conn = require("./db/conn.js")
 
 //const novice = require('./routes/novice')
 const users = require('./routes/users')
