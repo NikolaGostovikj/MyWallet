@@ -6,6 +6,7 @@ const path = require('path')
 const port = process.env.PORT || 5555
 const conn = require("./db/conn.js")
 
+
 //const novice = require('./routes/novice')
 const users = require('./routes/users')
 const goal = require('./routes/goal')
@@ -40,11 +41,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
 
-
-
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "build", "index.html"))
-})
+app.use(express.static(path.join(__dirname, "build"))); 
 
 
 app.get("/health", async (req, res) => {
