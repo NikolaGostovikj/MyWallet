@@ -5,6 +5,7 @@ body {
   background: url('../../images/background.jpg') no-repeat center center fixed;
   background-size: cover;
 }
+
 .button {
   padding: 10px;
   background-color: #3742fa;
@@ -16,11 +17,16 @@ body {
   margin-bottom: 0.5rem;
   transition: background-color 0.3s;
 }
+
+.button:hover {
+  background-color: #2f33c9;
+}
+
 .expense-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: center; /* Centers content vertically */
   height: 100vh;
 }
 
@@ -34,7 +40,8 @@ body {
 
 .stores-grid {
   display: flex;
-  gap: 2rem;
+  gap: 2rem; /* Space between Lidl and Mercator */
+  margin-bottom: 2rem; /* Space before the button */
 }
 
 .store-option {

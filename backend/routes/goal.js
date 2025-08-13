@@ -44,19 +44,18 @@ goal.get('/show',async(req,res)=>{
         }
 });
 
-goal.delete('/delete/:id', async (req, res) => {
+goal.post('/delete', async (req, res) => {
   try {
     if (!req.session.logged_in || !req.session.user_id) {
       return res.status(401).json({ success: false, message: "Not logged in" });
     }
 
-    const userId = req.session.user_id;
-    const goalId = Number(req.params.id);
+   const goalId = req.body.goal_id;
     if (!goalId) {
       return res.status(400).json({ success: false, message: "Invalid goal id" });
     }
 
-    const result = await DB.deleteGoalById(userId, goalId);
+    const result = await DB.deleteGoalById(goalId);
     if (result.affectedRows > 0) {
       return res.json({ success: true, message: "Goal deleted" });
     }

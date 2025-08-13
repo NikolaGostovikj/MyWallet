@@ -118,7 +118,7 @@ dataPool.allIncome = (id, email) => {
 dataPool.allGoal = (id, email) => {
   return new Promise((resolve, reject) => {
     conn.query(
-      `SELECT G.name, G.target_amount, G.deadline
+      `SELECT G.name, G.target_amount, G.deadline, G.goal_id
        FROM goal G
        JOIN users U ON G.user_id = U.user_id
        WHERE G.user_id = ? AND U.email = ?`,
@@ -288,11 +288,11 @@ dataPool.goalsByUserId = (userId) => {
   });
 };
 
-dataPool.deleteGoalById = (userId, goalId) => {
+dataPool.deleteGoalById = (goalId) => {
   return new Promise((resolve, reject) => {
     conn.query(
-      `DELETE FROM goal WHERE goal_id = ? AND user_id = ?`,
-      [goalId, userId],
+      `DELETE FROM goal WHERE goal_id = ?`,
+      [goalId],
       (err, res) => (err ? reject(err) : resolve(res))
     );
   });

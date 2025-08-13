@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./deleteGoalCss.css"; // uses same base look as your ShowGoals CSS
+import "./deleteGoalCss.css"; 
 const URL = "http://88.200.63.148:5555/";
 
 function DeleteGoal() {
@@ -24,37 +24,28 @@ function DeleteGoal() {
 
   
   async function handleDelete(g) {
-    try {
-      
-      if (g.goal_id || g.id) {
-        const id = g.goal_id ?? g.id;
-        const res = await fetch(`${URL}goal/delete/${id}`, {
-          method: "DELETE",
-          credentials: "include",
-        });
-        const out = await res.json();
-        if (out?.success === false) return alert(out.message || "Delete failed.");
-      } else {
-        
-        const res = await fetch(`${URL}goal/delete`, {
-          method: "POST",
-          credentials: "include",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name: g.name, deadline: g.deadline }),
-        });
-        const out = await res.json();
-        if (out?.success === false) return alert(out.message || "Delete failed.");
-      }
+      const id = g.goal_id;
+      try {
+    const response = await fetch(`${URL}goal/delete`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include", 
+      body: JSON.stringify({goal_id:id})
+    });
 
-      
-      setGoals((prev) =>
-        prev.filter((it) => (it.goal_id ?? it.id) !== (g.goal_id ?? g.id) || (g.goal_id == null && g.id == null && !(it.name === g.name && it.deadline === g.deadline)))
-      );
-    } catch (err) {
-      console.error("Delete error:", err);
-      alert("Could not delete goal.");
+    const result = await response.json();
+    console.log(result);
+
+    if (result.success) {
+      navigate("/bank");
+    } else {
+      alert(result.message || "Deleting a goal failed.");
     }
+  } catch (err) {
+    console.error("Error during delete:", err);
+    alert("An error occurred. Please try again later.");
   }
+}
 
   useEffect(() => {
     loadGoals();
@@ -79,7 +70,7 @@ function DeleteGoal() {
                   title="Delete goal"
                   onClick={() => handleDelete(g)}
                 >
-                  ×
+                  X
                 </button>
 
                 <strong>{g.name}</strong>

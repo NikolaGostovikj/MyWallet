@@ -17,8 +17,9 @@ function ExpensePage() {
         <div className="store-option" onClick={() => navigate("/mercator")}>
           <img src="../../images/mercator.jpg" alt="Mercator" />
         </div>
+        <button  className="button" onClick={()=>navigate("/bank")}>Go Back</button>
       </div>
-      <button  className="button" onClick={()=>navigate("/bank")}>Go Back</button>
+      
     </div>
   );
   
