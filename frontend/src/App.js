@@ -29,7 +29,7 @@ function App() {
         <Route path="/allExpenses" element={<AllExpenses/>}/>
         <Route path="/lidl" element={<Lidl/>}/>
         <Route path="/mercator" element={<Mercator/>}/>
-        <Route path="/mercator" element={<DeleteGoal/>}/>
+        <Route path="/deleteGoal" element={<DeleteGoal/>}/>
         
 
         {/* fallback */}
