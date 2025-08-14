@@ -64,7 +64,7 @@ export default function Bank() {
       )}
 
       <header className="header">
-        <h1 className="app-title">Your Balance</h1>
+        <h1 className="title">Your Balance</h1>
       </header>
 
       <div className="cloud">

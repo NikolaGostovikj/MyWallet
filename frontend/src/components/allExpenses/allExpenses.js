@@ -32,7 +32,7 @@ function AllExpenses() {
       <div className="form">
         <h1 className="title">Your Expenses</h1>
 
-        <button className="button" type="button" onClick={() => navigate("/expensePage")}>
+        <button className="button" type="button" onClick={() => navigate("/bank")}>
           Back
         </button>
 

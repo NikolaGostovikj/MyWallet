@@ -13,6 +13,9 @@ body {
   align-items: center;
   height: 100vh;
 }
+.title {
+  color: white;
+}
 
 .cloud {
   position: relative;
