@@ -11,6 +11,10 @@ function OwnExpense(){
     const navigate = useNavigate();
     async function addExpense(e){
         e.preventDefault();
+        if(amount<=0){
+            alert("Please add a positive amount!");
+            return;
+        }
         const response = await fetch(`${URL}expense/add`,{ method: "POST",
             headers: { "Content-Type": "application/json" },
             credentials: "include", 
