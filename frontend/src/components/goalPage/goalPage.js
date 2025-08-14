@@ -8,6 +8,7 @@ function GoalPage() {
   return (
     <div className="container">
       <div className="button-container">
+        <h1 className="title">Goals</h1>
         <button className="button" onClick={() => navigate("/goal")}>
           Add Goal
         </button>
