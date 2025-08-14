@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./expenseCss.css";
-import lidlImg from "../../images/lidl.jpg";
+import lidlImg from "../../images/lidl.png";
 import mercatorImg from "../../images/mercator.jpg";
 
 function ExpensePage() {

@@ -16,31 +16,25 @@ export default function Bank() {
   useEffect(() => {
     (async () => {
       try {
-       
         const s = await fetch(`${URL}users/session`, { credentials: "include" });
         const sess = await s.json();
-
         if (!sess?.logged_in) return navigate("/");
-
         setIsAdmin(sess?.role === "admin");
 
-        
         const u = await fetch(`${URL}users/get/${sess.user_id}`, { credentials: "include" });
         const data = await u.json();
         setUser(data);
 
-        
         if (sess?.role === "admin") {
           const resp = await fetch(`${URL}users/list`, { credentials: "include" });
           const list = await resp.json();
           setAllUsers(Array.isArray(list) ? list : []);
         }
 
-        
         const alertRes = await fetch(`${URL}alert/check-bank`, {
           method: "POST",
           credentials: "include",
-          headers: { "Content-Type": "application/json" }
+          headers: { "Content-Type": "application/json" },
         });
         const alertData = await alertRes.json();
         if (alertData?.message) {
@@ -62,7 +56,6 @@ export default function Bank() {
 
   return (
     <div className="bank-container">
-      {/* Alert */}
       {alertMessage && (
         <div className={`popup-alert ${alertType}`}>
           <p>{alertMessage}</p>
@@ -70,13 +63,16 @@ export default function Bank() {
         </div>
       )}
 
+      <header className="header">
+        <h1 className="app-title">Your Balance</h1>
+      </header>
+
       <div className="cloud">
         <div className="money-fill" style={{ height: `100%` }}>
           <span className="money-text">€{amount.toFixed(2)}</span>
         </div>
       </div>
 
-      {/* Admin-only section */}
       {isAdmin && (
         <div className="admin-panel">
           <p><strong>Hello, admin{user?.name ? ` ${user.name}` : ""}!</strong></p>
@@ -95,14 +91,14 @@ export default function Bank() {
         </div>
       )}
 
-      <div className="buttons">
+      <nav className="buttons">
         <button onClick={() => navigate("/income")}>Add Income</button>
         <button onClick={() => navigate("/allIncomes")}>Show Incomes</button>
         <button onClick={() => navigate("/expensePage")}>Add Expense</button>
         <button onClick={() => navigate("/allExpenses")}>Show Expenses</button>
         <button onClick={() => navigate("/goalPage")}>Your Goals</button>
         <button onClick={logout}>Logout</button>
-      </div>
+      </nav>
     </div>
   );
 }
