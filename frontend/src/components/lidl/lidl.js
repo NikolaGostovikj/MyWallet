@@ -66,7 +66,7 @@ function Lidl() {
     showAllItems();
   }, []);
 
-  const qtyOf = (item) => quantities[item.name] ?? 0;
+  const qtyOf = (item) => quantities[item.name] ?? 1;
 
   const toggleSelect = (item) => {
     setSelected((prev) => {
@@ -79,14 +79,15 @@ function Lidl() {
         });
         return next;
       } else {
-        setQuantities((q) => ({ ...q, [item.name]: 0 }));
+        setQuantities((q) => ({ ...q, [item.name]: 1 }));
         return [...prev, item];
       }
     });
   };
 
   const changeQty = (item, raw) => {
-    const val = Math.max(0, Math.floor(Number(raw) || 0));
+    const n = Math.floor(Number(raw));
+    const val = Number.isFinite(n) && n >= 1 ? n : 1;
     setQuantities((q) => ({ ...q, [item.name]: val }));
     setSelected((p) => (p.includes(item) ? p : [...p, item]));
   };
@@ -129,9 +130,13 @@ function Lidl() {
                         <input
                           className="qty-input"
                           type="number"
-                          min="0"
-                          placeholder={active ? "choose" : undefined}
-                          value={active ? (quantities[item.name] ?? "") : 0}
+                          min="1"
+                          placeholder={active ? undefined : "—"}
+                          value={active ? quantities[item.name] ?? 1 : ""}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            if (!active) toggleSelect(item);
+                          }}
                           onChange={(e) => changeQty(item, e.target.value)}
                         />
                       </td>
