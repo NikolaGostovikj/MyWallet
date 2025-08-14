@@ -5,29 +5,25 @@ import "./lidlCss.css";
 function Lidl() {
   const [items, setItems] = useState([]);
   const [selected, setSelected] = useState([]);
-  const [quantities, setQuantities] = useState({}); 
+  const [quantities, setQuantities] = useState({});
   const URL = "http://88.200.63.148:5555/";
   const navigate = useNavigate();
 
   async function addExpense(e) {
     e.preventDefault();
-
     if (selected.length === 0) return alert("Select at least one item.");
-
     const amount = Number(total);
     if (!Number.isFinite(amount) || amount <= 0) {
       return alert("Total must be a positive number.");
     }
-
     const list = JSON.stringify(
       selected.map((it) => ({
         name: it.name,
         category: it.category,
         price: Number(it.price),
-        quantity: Number(quantities[it.name] || 1), 
+        quantity: Number(quantities[it.name] || 1),
       }))
     );
-
     const res = await fetch(`${URL}expense/add`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -35,12 +31,11 @@ function Lidl() {
       body: JSON.stringify({
         store_id: 2,
         storename: "Lidl",
-        amount,          
-        list,        
+        amount,
+        list,
         description: "Purchase at Lidl",
       }),
     });
-
     const result = await res.json();
     if (res.ok && result.success) {
       navigate("/bank");
@@ -56,7 +51,6 @@ function Lidl() {
         credentials: "include",
         headers: { "Content-Type": "application/json" },
       });
-
       const result = await response.json();
       if (Array.isArray(result)) {
         setItems(result);
@@ -72,34 +66,30 @@ function Lidl() {
     showAllItems();
   }, []);
 
+  const qtyOf = (item) => quantities[item.name] ?? 0;
+
   const toggleSelect = (item) => {
     setSelected((prev) => {
       if (prev.includes(item)) {
-       
         const next = prev.filter((i) => i !== item);
         setQuantities((q) => {
-          const copy = { ...q };
-          delete copy[item.name];
-          return copy;
+          const c = { ...q };
+          delete c[item.name];
+          return c;
         });
         return next;
       } else {
-        
-        setQuantities((q) => ({ ...q, [item.name]: q[item.name] || 1 }));
+        setQuantities((q) => ({ ...q, [item.name]: 0 }));
         return [...prev, item];
       }
     });
   };
 
-  
   const changeQty = (item, raw) => {
-    const val = Math.max(1, Math.floor(Number(raw) || 1));
+    const val = Math.max(0, Math.floor(Number(raw) || 0));
     setQuantities((q) => ({ ...q, [item.name]: val }));
-    
-    setSelected((prev) => (prev.includes(item) ? prev : [...prev, item]));
+    setSelected((p) => (p.includes(item) ? p : [...p, item]));
   };
-
-  const qtyOf = (item) => quantities[item.name] || 1;
 
   const total = selected
     .reduce((sum, it) => sum + qtyOf(it) * parseFloat(it.price || 0), 0)
@@ -109,11 +99,9 @@ function Lidl() {
     <div className="container">
       <div className="form">
         <h1 className="title">Lidl – Items</h1>
-
         <button className="button" type="button" onClick={() => navigate("/bank")}>
           Back
         </button>
-
         {items.length > 0 ? (
           <div className="table-scroll">
             <table className="items-table">
@@ -122,7 +110,7 @@ function Lidl() {
                   <th>Category</th>
                   <th>Name</th>
                   <th>Price (€)</th>
-                  <th>Qty</th> 
+                  <th>Qty</th>
                 </tr>
               </thead>
               <tbody>
@@ -132,7 +120,7 @@ function Lidl() {
                     <tr
                       key={idx}
                       onClick={() => toggleSelect(item)}
-                      className={"active"}
+                      className={active ? "active" : ""}
                     >
                       <td>{item.category}</td>
                       <td>{item.name}</td>
@@ -141,8 +129,9 @@ function Lidl() {
                         <input
                           className="qty-input"
                           type="number"
-                          min="1"
-                          value={active ? qtyOf(item) : (quantities[item.name] || 1)}
+                          min="0"
+                          placeholder={active ? "choose" : undefined}
+                          value={active ? (quantities[item.name] ?? "") : 0}
                           onChange={(e) => changeQty(item, e.target.value)}
                         />
                       </td>
@@ -155,11 +144,9 @@ function Lidl() {
         ) : (
           <p>No items found.</p>
         )}
-
         <div className="summary">
           <strong>Total amount spent:</strong> € {total}
         </div>
-
         {selected.length > 0 && (
           <div className="selected-list">
             <h3>Selected Items:</h3>
@@ -172,7 +159,6 @@ function Lidl() {
             </ul>
           </div>
         )}
-
         <button
           className="button"
           type="button"
