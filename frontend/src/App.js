@@ -12,6 +12,7 @@ import AllExpenses from './components/allExpenses/allExpenses.js'
 import Lidl from './components/lidl/lidl.js';
 import Mercator from "./components/mercator/mercator.js";
 import DeleteGoal from "./components/deleteGoal/deleteGoal.js";
+import OwnExpense from "./components/ownExpense/ownExpense.js";
 
 function App() {
   return (
@@ -30,7 +31,7 @@ function App() {
         <Route path="/lidl" element={<Lidl/>}/>
         <Route path="/mercator" element={<Mercator/>}/>
         <Route path="/deleteGoal" element={<DeleteGoal/>}/>
-        
+        <Route path="/ownExpense" element={<OwnExpense/>}/>
 
         {/* fallback */}
         <Route path="*" element={<Navigate to="/" replace />} />

@@ -8,12 +8,26 @@ expense.post("/add", async (req, res) => {
   }
 
   const userId = req.session.user_id;
-  const amount = Number(req.body.amount);
+  //const amount = Number(req.body.amount);
   const storeId = Number(req.body.store_id);
   const storename = (req.body.storename || '').trim();
   const description = (req.body.description || '').trim() || null;
-  const list = (req.body.list || '').trim(); 
+  //const list = (req.body.list || '').trim();
   const dateTime = new Date();
+  let list;
+  let amount;
+
+if (storeId === 3) {
+  list = (req.body.list || '').trim();
+  amount = Number(req.body.amount);
+} else {
+  list = JSON.stringify(JSON.parse((req.body.list || '').trim()));
+  amount = Number(
+    JSON.parse(list).reduce(
+      (sum, it) => sum + Number(it.price) * Number(it.quantity || 1), 0 ).toFixed(2)
+  );
+}
+
 
   if (!Number.isFinite(amount) || amount <= 0 || !storeId || !storename || !list) {
     return res.status(400).json({ success: false, message: "Please provide store_id, storename, positive amount, and list." });

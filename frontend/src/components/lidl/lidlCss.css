@@ -141,3 +141,11 @@ body {
     font-size: 1.25rem;
   }
 }
+
+.qty-input {
+  width: 64px;
+  padding: 6px 8px;
+  border: 1px solid #dcdcdc;
+  border-radius: 6px;
+  font-size: 0.95rem;
+}

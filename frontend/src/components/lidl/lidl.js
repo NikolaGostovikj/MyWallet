@@ -5,49 +5,49 @@ import "./lidlCss.css";
 function Lidl() {
   const [items, setItems] = useState([]);
   const [selected, setSelected] = useState([]);
+  const [quantities, setQuantities] = useState({}); 
   const URL = "http://88.200.63.148:5555/";
   const navigate = useNavigate();
 
-
   async function addExpense(e) {
-  e.preventDefault();
+    e.preventDefault();
 
-  if (selected.length === 0) return alert("Select at least one item.");
+    if (selected.length === 0) return alert("Select at least one item.");
 
-  const amount = Number(total);  
-  if (!Number.isFinite(amount) || amount <= 0) {
-    return alert("Total must be a positive number.");
+    const amount = Number(total);
+    if (!Number.isFinite(amount) || amount <= 0) {
+      return alert("Total must be a positive number.");
+    }
+
+    const list = JSON.stringify(
+      selected.map((it) => ({
+        name: it.name,
+        category: it.category,
+        price: Number(it.price),
+        quantity: Number(quantities[it.name] || 1), 
+      }))
+    );
+
+    const res = await fetch(`${URL}expense/add`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({
+        store_id: 2,
+        storename: "Lidl",
+        amount,          
+        list,        
+        description: "Purchase at Lidl",
+      }),
+    });
+
+    const result = await res.json();
+    if (res.ok && result.success) {
+      navigate("/bank");
+    } else {
+      alert(result.message || "Failed to add expense.");
+    }
   }
-
-  const list = JSON.stringify(
-    selected.map(it => ({
-      name: it.name,
-      category: it.category,
-      price: Number(it.price),
-    }))
-  );
-
-  const res = await fetch(`${URL}expense/add`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    credentials: "include",
-    body: JSON.stringify({
-      store_id: 2,            
-      storename: "Lidl",
-      amount,                  
-      list,                    
-      description: "Purchase at Lidl",
-    }),
-  });
-
-  const result = await res.json();
-  if (res.ok && result.success) {
-    navigate("/bank"); 
-  } else {
-    alert(result.message || "Failed to add expense.");
-  }
-}
-
 
   async function showAllItems() {
     try {
@@ -73,12 +73,37 @@ function Lidl() {
   }, []);
 
   const toggleSelect = (item) => {
-    setSelected((prev) =>
-      prev.includes(item) ? prev.filter((i) => i !== item) : [...prev, item]
-    );
+    setSelected((prev) => {
+      if (prev.includes(item)) {
+       
+        const next = prev.filter((i) => i !== item);
+        setQuantities((q) => {
+          const copy = { ...q };
+          delete copy[item.name];
+          return copy;
+        });
+        return next;
+      } else {
+        
+        setQuantities((q) => ({ ...q, [item.name]: q[item.name] || 1 }));
+        return [...prev, item];
+      }
+    });
   };
 
-  const total = selected.reduce((sum, it) => sum + parseFloat(it.price), 0).toFixed(2);
+  
+  const changeQty = (item, raw) => {
+    const val = Math.max(1, Math.floor(Number(raw) || 1));
+    setQuantities((q) => ({ ...q, [item.name]: val }));
+    
+    setSelected((prev) => (prev.includes(item) ? prev : [...prev, item]));
+  };
+
+  const qtyOf = (item) => quantities[item.name] || 1;
+
+  const total = selected
+    .reduce((sum, it) => sum + qtyOf(it) * parseFloat(it.price || 0), 0)
+    .toFixed(2);
 
   return (
     <div className="container">
@@ -90,37 +115,46 @@ function Lidl() {
         </button>
 
         {items.length > 0 ? (
-  <div className="table-scroll">
-    <table className="items-table">
-      <thead>
-        <tr>
-          <th>Category</th>
-          <th>Name</th>
-          <th>Price (€)</th>
-        </tr>
-      </thead>
-      <tbody>
-        {items.map((item, idx) => {
-          const active = selected.includes(item);
-          return (
-            <tr
-              key={idx}
-              onClick={() => toggleSelect(item)}
-              className={active ? "active" : ""}
-            >
-              <td>{item.category}</td>
-              <td>{item.name}</td>
-              <td>{parseFloat(item.price).toFixed(2)}</td>
-            </tr>
-          );
-        })}
-      </tbody>
-    </table>
-  </div>
-) : (
-  <p>No items found.</p>
-)}
-
+          <div className="table-scroll">
+            <table className="items-table">
+              <thead>
+                <tr>
+                  <th>Category</th>
+                  <th>Name</th>
+                  <th>Price (€)</th>
+                  <th>Qty</th> 
+                </tr>
+              </thead>
+              <tbody>
+                {items.map((item, idx) => {
+                  const active = selected.includes(item);
+                  return (
+                    <tr
+                      key={idx}
+                      onClick={() => toggleSelect(item)}
+                      className={"active"}
+                    >
+                      <td>{item.category}</td>
+                      <td>{item.name}</td>
+                      <td>{parseFloat(item.price).toFixed(2)}</td>
+                      <td>
+                        <input
+                          className="qty-input"
+                          type="number"
+                          min="1"
+                          value={active ? qtyOf(item) : (quantities[item.name] || 1)}
+                          onChange={(e) => changeQty(item, e.target.value)}
+                        />
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <p>No items found.</p>
+        )}
 
         <div className="summary">
           <strong>Total amount spent:</strong> € {total}
@@ -132,7 +166,7 @@ function Lidl() {
             <ul>
               {selected.map((it, idx) => (
                 <li key={idx}>
-                  {it.name} – € {parseFloat(it.price).toFixed(2)} ({it.category})
+                  {it.name} × {qtyOf(it)} – € {(qtyOf(it) * parseFloat(it.price)).toFixed(2)} ({it.category})
                 </li>
               ))}
             </ul>
