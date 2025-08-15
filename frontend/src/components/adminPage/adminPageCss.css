@@ -1,0 +1,44 @@
+
+.admin-page {
+  min-height: 100vh;
+  background: url('../../images/background.jpg') no-repeat center center fixed;
+  background-size: cover;
+
+  display: flex;
+  align-items: center;        
+  justify-content: center;    
+  padding: 48px 16px;
+}
+
+
+.admin-page .holder {
+  width: 100%;
+  max-width: 520px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.admin-page .button {
+  width: 100%;
+  padding: 14px 16px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #fff;
+  background: #4b54ff;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  transition: transform 0.06s ease, filter 0.2s ease, background 0.2s ease;
+  text-align: center;
+}
+
+.admin-page .button:hover { filter: brightness(0.95); }
+.admin-page .button:active { transform: translateY(1px); }
+
+
+@media (max-width: 480px) {
+  .admin-page { padding: 32px 12px; }
+  .admin-page .holder { max-width: 440px; }
+}
