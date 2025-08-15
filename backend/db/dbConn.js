@@ -73,7 +73,7 @@ dataPool.allUsers = () => {
 //Lists all Expenses for a given user
 dataPool.allExpenses = (id,email) => {
 return new Promise((resolve, reject) => {
-  conn.query(`SELECT E.description, E.amount, E.storename, E.date_time, E.list 
+  conn.query(`SELECT E.description, E.amount, E.storename, E.date_time, E.list, E.expense_id 
       FROM expense E 
       JOIN users U ON E.user_id = U.user_id 
       WHERE E.user_id = ? AND U.email = ?`
