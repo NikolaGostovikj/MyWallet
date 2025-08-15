@@ -85,6 +85,30 @@ users.get('/session', async (req, res, next)=>{
         res.sendStatus(500)
     }
 })
+
+users.post('/delete', async (req, res) => {
+  try {
+    if (!req.session.logged_in || !req.session.user_id) {
+      return res.status(401).json({ success: false, message: "Not logged in" });
+    }
+
+   const userId = req.body.user_id;
+    if (!userId) {
+      return res.status(400).json({ success: false, message: "Invalid user id" });
+    }
+
+    const result = await DB.deleteUserById(userId);
+    if (result.affectedRows > 0) {
+      return res.json({ success: true, message: "User deleted" });
+    }
+
+    return res.status(404).json({ success: false, message: "User not found" });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ success: false, message: "Server error" });
+  }
+});
+
  
  
  

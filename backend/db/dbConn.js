@@ -297,6 +297,15 @@ dataPool.deleteGoalById = (goalId) => {
     );
   });
 };
+dataPool.deleteUserById = (userId) => {
+  return new Promise((resolve, reject) => {
+    conn.query(
+      `DELETE FROM users WHERE user_id = ?`,
+      [userId],
+      (err, res) => (err ? reject(err) : resolve(res))
+    );
+  });
+};
 dataPool.deleteExpense = (deleteId) => {
   return new Promise((resolve, reject) => {
     conn.query(

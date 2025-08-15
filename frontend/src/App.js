@@ -13,7 +13,9 @@ import Lidl from './components/lidl/lidl.js';
 import Mercator from "./components/mercator/mercator.js";
 import DeleteGoal from "./components/deleteGoal/deleteGoal.js";
 import OwnExpense from "./components/ownExpense/ownExpense.js";
-
+import AdminPage from "./components/adminPage/adminPage.js";
+import ManageUsers from "./components/manageUsers/manageUsers.js";
+import UserRoles from "./components/userRoles/userRoles.js";
 function App() {
   return (
     <BrowserRouter>
@@ -32,7 +34,9 @@ function App() {
         <Route path="/mercator" element={<Mercator/>}/>
         <Route path="/deleteGoal" element={<DeleteGoal/>}/>
         <Route path="/ownExpense" element={<OwnExpense/>}/>
-
+        <Route path="/adminPage" element={<AdminPage/>}/>
+        <Route path="/manageUsers" element={<ManageUsers/>}/>
+        <Route path="/userRoles" element={<UserRoles/>}/>
         {/* fallback */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

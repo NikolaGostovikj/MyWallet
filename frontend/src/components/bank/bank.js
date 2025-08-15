@@ -88,6 +88,13 @@ export default function Bank() {
               ))}
             </ul>
           )}
+
+          
+          <div className="admin-actions">
+            <button onClick={() => navigate("/adminPage")}>
+              Manage System
+            </button>
+          </div>
         </div>
       )}
 

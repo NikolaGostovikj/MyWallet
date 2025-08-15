@@ -41,6 +41,7 @@ function AllExpenses() {
       if (result?.success) {
        
         setExpenses((prev) => prev.filter((e) => (e.expense_id ?? e.id) !== id));
+        alert("Expense has been successfully deleted")
       } else {
         alert(result?.message || "Deleting an expense failed.");
       }
