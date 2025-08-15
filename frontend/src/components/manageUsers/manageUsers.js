@@ -6,6 +6,7 @@ const URL = "http://88.200.63.148:5555/";
 
 function ManageUsers() {
   const [users, setUsers] = useState([]);
+  const [myId, setMyId] = useState(null);           
   const navigate = useNavigate();
 
   async function fetchAllUsers() {
@@ -22,6 +23,17 @@ function ManageUsers() {
       alert("Failed to load users.");
     }
   }
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const s = await fetch(`${URL}users/session`, { credentials: "include" });
+        const sess = await s.json();
+        setMyId(sess?.user_id ?? null);
+      } catch {}
+      fetchAllUsers();
+    })();
+  }, []);
 
   async function handleDelete(user) {
     const id = user.user_id ?? user.id;
@@ -50,47 +62,45 @@ function ManageUsers() {
     }
   }
 
-  useEffect(() => {
-    fetchAllUsers();
-  }, []);
-
   return (
     <div className="manage-users-page">
-    <div className="container">
-      <div className="form">
-        <h1 className="title">Manage Users</h1>
+      <div className="container">
+        <div className="form">
+          <h1 className="title">Manage Users</h1>
 
-        <button className="button" type="button" onClick={() => navigate("/bank")}>
-          Back
-        </button>
+          <button className="button" type="button" onClick={() => navigate("/bank")}>
+            Back
+          </button>
 
-        {users?.length > 0 ? (
-          <ul className="user-list">
-            {users.map((u, idx) => (
-              <li
-                key={u.user_id ?? u.id ?? idx}
-                className="user-item deletable"
-              >
-                <button
-                  className="delete-btn"
-                  aria-label={`Delete ${u.name || "user"}`}
-                  title="Delete user"
-                  onClick={() => handleDelete(u)}
-                >
-                  X
-                </button>
+          {users?.length > 0 ? (
+            <ul className="user-list">
+              {users
+                .filter((u) => (u.user_id ?? u.id) !== myId)  
+                .map((u, idx) => (
+                  <li
+                    key={u.user_id ?? u.id ?? idx}
+                    className="user-item deletable"
+                  >
+                    <button
+                      className="delete-btn"
+                      aria-label={`Delete ${u.name || "user"}`}
+                      title="Delete user"
+                      onClick={() => handleDelete(u)}
+                    >
+                      X
+                    </button>
 
-                <strong>{u.name} {u.lastname}</strong>
-                <span>Email: {u.email || "—"}</span>
-                <span>Role: {u.role || "—"}</span>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>No users found.</p>
-        )}
+                    <strong>{u.name} {u.lastname}</strong>
+                    <span>Email: {u.email || "—"}</span>
+                    <span>Role: {u.role || "—"}</span>
+                  </li>
+                ))}
+            </ul>
+          ) : (
+            <p>No users found.</p>
+          )}
+        </div>
       </div>
-    </div>
     </div>
   );
 }

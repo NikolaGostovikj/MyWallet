@@ -6,6 +6,7 @@ const URL = "http://88.200.63.148:5555/";
 
 function UserRoles() {
   const [users, setUsers] = useState([]);
+  const [myId, setMyId] = useState(null);                 
   const navigate = useNavigate();
 
   async function fetchAllUsers() {
@@ -42,7 +43,6 @@ function UserRoles() {
         return alert(result?.message || `Role update failed (${resp.status}).`);
       }
 
-    
       setUsers(prev =>
         prev.map(u =>
           (u.user_id ?? u.id) === id ? { ...u, role: nextRole } : u
@@ -55,7 +55,14 @@ function UserRoles() {
   }
 
   useEffect(() => {
-    fetchAllUsers();
+    (async () => {
+      try {
+        const s = await fetch(`${URL}users/session`, { credentials: "include" });
+        const sess = await s.json();
+        setMyId(sess?.user_id ?? null);                  
+      } catch {}
+      fetchAllUsers();
+    })();
   }, []);
 
   return (
@@ -70,27 +77,29 @@ function UserRoles() {
 
           {users?.length > 0 ? (
             <ul className="user-list">
-              {users.map((u, idx) => {
-                const id = u.user_id ?? u.id ?? idx;
-                return (
-                  <li key={id} className="user-item">
-                    <div className="user-meta">
-                      <strong>{u.name} {u.lastname}</strong>
-                      <span>Email: {u.email || "—"}</span>
-                      <span>Role: <b>{u.role || "—"}</b></span>
-                    </div>
+              {users
+                .filter((u) => (u.user_id ?? u.id) !== myId)  
+                .map((u, idx) => {
+                  const id = u.user_id ?? u.id ?? idx;
+                  return (
+                    <li key={id} className="user-item">
+                      <div className="user-meta">
+                        <strong>{u.name} {u.lastname}</strong>
+                        <span>Email: {u.email || "—"}</span>
+                        <span>Role: <b>{u.role || "—"}</b></span>
+                      </div>
 
-                    <button
-                      className="btn secondary"
-                      type="button"
-                      onClick={() => handleToggleRole(u)}
-                      title="Toggle between admin and student"
-                    >
-                      Toggle Role
-                    </button>
-                  </li>
-                );
-              })}
+                      <button
+                        className="btn secondary"
+                        type="button"
+                        onClick={() => handleToggleRole(u)}
+                        title="Toggle between admin and student"
+                      >
+                        Toggle Role
+                      </button>
+                    </li>
+                  );
+                })}
             </ul>
           ) : (
             <p>No users found.</p>

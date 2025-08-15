@@ -6,35 +6,40 @@ expense.post("/add", async (req, res) => {
   if (!req.session.logged_in || !req.session.user_id) {
     return res.status(401).json({ success: false, message: "Not logged in" });
   }
-
   const userId = req.session.user_id;
-  //const amount = Number(req.body.amount);
   const storeId = Number(req.body.store_id);
   const storename = (req.body.storename || '').trim();
   const description = (req.body.description || '').trim() || null;
-  //const list = (req.body.list || '').trim();
   const dateTime = new Date();
   let list;
   let amount;
 
-if (storeId === 3) {
-  list = (req.body.list || '').trim();
-  amount = Number(req.body.amount);
-} else {
-  list = JSON.stringify(JSON.parse((req.body.list || '').trim()));
-  amount = Number(
-    JSON.parse(list).reduce(
-      (sum, it) => sum + Number(it.price) * Number(it.quantity || 1), 0 ).toFixed(2)
-  );
-}
-
+  if (storeId === 3) {
+    list = (req.body.list || '').trim();
+    amount = Number(req.body.amount);
+  } else {
+    list = JSON.stringify(JSON.parse((req.body.list || '').trim()));
+    amount = Number(
+      JSON.parse(list).reduce(
+        (sum, it) => sum + Number(it.price) * Number(it.quantity || 1), 0
+      ).toFixed(2)
+    );
+  }
 
   if (!Number.isFinite(amount) || amount <= 0 || !storeId || !storename || !list) {
     return res.status(400).json({ success: false, message: "Please provide store_id, storename, positive amount, and list." });
   }
 
   try {
-   
+    
+    const currentAmount = await DB.getUserAmount(userId);
+    if (currentAmount === null) {
+      return res.status(404).json({ success: false, message: "User balance not found." });
+    }
+    if (amount > currentAmount) {
+      return res.status(400).json({ success: false, message: "Insufficient funds to add this expense." });
+    }
+
     const queryResult = await DB.addExpense(userId, storeId, amount, storename, description, list, dateTime);
     if (!queryResult.affectedRows) {
       return res.status(500).json({ success: false, message: "Failed to add expense." });
