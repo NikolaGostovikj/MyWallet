@@ -1,0 +1,100 @@
+/* Page wrapper */
+.user-roles-page {
+  min-height: 100vh;
+  padding: 24px;
+  background: url('../../images/background.jpg') no-repeat center center fixed;
+  background-size: cover;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Card */
+.user-roles-page .container {
+  width: 100%;
+  max-width: 520px;
+}
+
+.user-roles-page .form {
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.user-roles-page .title {
+  margin-bottom: 1rem;
+  text-align: center;
+  font-size: 1.6rem;
+  color: #2f3542;
+}
+
+.user-roles-page .button {
+  padding: 10px;
+  background-color: #3742fa;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-bottom: 0.75rem;
+  transition: background-color 0.3s;
+  width: 100%;
+}
+
+.user-roles-page .button:hover { background-color: #2f3ed4; }
+
+/* Scrollable list */
+.user-roles-page .user-list {
+  margin: 0.5rem 0 0;
+  list-style: none;
+  padding: 0;
+  width: 100%;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+/* Row layout: info left, action right */
+.user-roles-page .user-item {
+  background: #f7f7f7;
+  padding: 0.8rem;
+  border-radius: 6px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.05);
+  margin-bottom: 0.5rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.user-roles-page .user-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.95rem;
+}
+
+.user-roles-page .btn.secondary {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background: #e9ecff;
+  color: #223;
+  font-weight: 600;
+  transition: filter 0.2s ease;
+  white-space: nowrap;
+}
+
+.user-roles-page .btn.secondary:hover { filter: brightness(0.96); }
+.user-roles-page .btn.secondary:disabled { opacity: 0.6; cursor: default; }
+
+@media (max-width: 480px) {
+  .user-roles-page { padding: 16px; }
+  .user-roles-page .form { padding: 1.25rem; }
+}

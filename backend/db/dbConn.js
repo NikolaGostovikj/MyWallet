@@ -316,4 +316,11 @@ dataPool.deleteExpense = (deleteId) => {
   });
 };
 
+dataPool.updateUserRole = (userId, role) => new Promise((resolve, reject) => {
+  conn.query(`UPDATE users SET role = ? WHERE user_id = ?`, [role, userId],
+    (err, res) => err ? reject(err) : resolve(res)
+  );
+});
+
+
 module.exports = dataPool;
