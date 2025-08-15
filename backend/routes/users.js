@@ -108,7 +108,7 @@ users.post('/delete', async (req, res) => {
     return res.status(500).json({ success: false, message: "Server error" });
   }
 });
-user.post('/reset', async (req ,res)=>{
+users.post('/reset', async (req ,res)=>{
     try{
     if (!req.session.logged_in || !req.session.user_id) {
         return res.status(401).json({ success: false, message: "Not logged in" });
