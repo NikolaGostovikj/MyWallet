@@ -23,6 +23,33 @@ function AllExpenses() {
     }
   }
 
+  async function handleDelete(expense) {
+    const id = expense.expense_id ?? expense.id;
+    if (!id) {
+      alert("Missing expense id.");
+      return;
+    }
+    try {
+      const response = await fetch(`${URL}expense/delete`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ expense_id: id }),
+      });
+
+      const result = await response.json();
+      if (result?.success) {
+       
+        setExpenses((prev) => prev.filter((e) => (e.expense_id ?? e.id) !== id));
+      } else {
+        alert(result?.message || "Deleting an expense failed.");
+      }
+    } catch (err) {
+      console.error("Error during delete:", err);
+      alert("An error occurred. Please try again later.");
+    }
+  }
+
   useEffect(() => {
     fetchAllExpenses();
   }, []);
@@ -39,11 +66,26 @@ function AllExpenses() {
         {expenses?.length > 0 ? (
           <ul className="expense-list">
             {expenses.map((e, idx) => (
-              <li key={idx} className="expense-item">
+              <li
+                key={e.expense_id ?? e.id ?? idx}
+                className="expense-item deletable"
+              >
+                <button
+                  className="delete-btn"
+                  aria-label={`Delete ${e.description || "expense"}`}
+                  title="Delete expense"
+                  onClick={() => handleDelete(e)}
+                >
+                  X
+                </button>
+
                 <strong>{e.description}</strong>
-                <span>Amount: €{e.amount}</span>
+                <span>Amount: €{Number(e.amount).toFixed(2)}</span>
                 {e.storename && <span>Store: {e.storename}</span>}
-                <span>Date: {new Date(e.date_time).toLocaleDateString()}</span>
+                <span>
+                  Date:{" "}
+                  {e.date_time ? new Date(e.date_time).toLocaleDateString() : "—"}
+                </span>
               </li>
             ))}
           </ul>
@@ -54,4 +96,5 @@ function AllExpenses() {
     </div>
   );
 }
-export default AllExpenses
+
+export default AllExpenses;

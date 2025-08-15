@@ -70,4 +70,21 @@ expense.get('/show-monthly', async (req, res) => {
   }
 });
 
+expense.post('/delete',async (req,res)=>{
+  try{
+    if (!req.session.logged_in || !req.session.user_id) {
+      return res.status(401).json({ success: false, message: "Not logged in" });
+    }
+    const deleteId = req.body.expense_id;
+    const queryResult = await DB.deleteExpense(deleteId);
+    if(queryResult.affectedRows){
+      console.log("Delete has been succesfull");
+      return res.status(201).json({ success: true, message: "Expense deleted.", deleteId});
+    }
+  } catch(err){
+    console.log(err)
+    res.sendStatus(500)
+  }
+})
+
 module.exports = expense;

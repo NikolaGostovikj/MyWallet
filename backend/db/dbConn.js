@@ -297,5 +297,14 @@ dataPool.deleteGoalById = (goalId) => {
     );
   });
 };
+dataPool.deleteExpense = (deleteId) => {
+  return new Promise((resolve, reject) => {
+    conn.query(
+      `DELETE FROM expense WHERE expense_id = ?`,
+      [deleteId],
+      (err, res) => (err ? reject(err) : resolve(res))
+    );
+  });
+};
 
 module.exports = dataPool;
