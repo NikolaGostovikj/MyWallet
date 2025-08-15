@@ -241,6 +241,18 @@ dataPool.getUserAmount = (userId) => {
   })
 }
 
+dataPool.resetAmount = (userId) => {
+  return new Promise((resolve, reject) => {
+    conn.query(
+      "UPDATE users SET amount = 0 WHERE user_id = ?",
+      [userId],
+      (err, result) => {
+        if (err) return reject(err);
+        resolve(result); 
+      }
+    );
+  });
+};
 //Easy to make a query to have a name as a param and search using that
 dataPool.allItemsLidl = () => {
   return new Promise((resolve, reject) => {

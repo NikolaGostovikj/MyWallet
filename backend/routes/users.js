@@ -108,7 +108,22 @@ users.post('/delete', async (req, res) => {
     return res.status(500).json({ success: false, message: "Server error" });
   }
 });
-
+user.post('/reset', async (req ,res)=>{
+    try{
+    if (!req.session.logged_in || !req.session.user_id) {
+        return res.status(401).json({ success: false, message: "Not logged in" });
+    }
+    let userId = req.body.user_id;
+    const queryResult = await DB.resetAmount(userId);
+    if (queryResult.affectedRows > 0) {
+         return res.json({ success: true, message: "User affected" });
+    }
+    return res.status(404).json({ success: false, message: "User not found" });
+    }catch(err){
+        console.error(err);
+        return res.status(500).json({ success: false, message: "Server error" });
+    }
+})
  
  
  users.post('/update-role', async (req,res) => {
