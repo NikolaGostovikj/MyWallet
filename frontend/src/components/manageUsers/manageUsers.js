@@ -55,6 +55,7 @@ function ManageUsers() {
   }, []);
 
   return (
+    <div className="manage-users-page">
     <div className="container">
       <div className="form">
         <h1 className="title">Manage Users</h1>
@@ -89,6 +90,7 @@ function ManageUsers() {
           <p>No users found.</p>
         )}
       </div>
+    </div>
     </div>
   );
 }

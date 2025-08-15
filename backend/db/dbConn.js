@@ -63,7 +63,7 @@ dataPool.registerUser = (name,lastname,password,email,amount,role) => {
 
 dataPool.allUsers = () => {
   return new Promise((resolve, reject) => {
-    conn.query(`SELECT user_id, name, lastname FROM users`, (err, res) => {
+    conn.query(`SELECT user_id, name, email, role lastname FROM users`, (err, res) => {
       if (err) { return reject(err) }
       return resolve(res)
     })

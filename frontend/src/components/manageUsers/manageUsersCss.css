@@ -1,39 +1,42 @@
-body {
-  margin: 0;
-  padding: 0;
-  font-family: Arial, sans-serif;
+.manage-users-page {
+  min-height: 100vh;
+  padding: 24px;
   background: url('../../images/background.jpg') no-repeat center center fixed;
   background-size: cover;
-}
 
-.container {
   display: flex;
+  align-items: center;
   justify-content: center;
-  align-items: flex-start;
-  min-height: 100vh;
-  padding: 24px 0;
 }
 
-.form {
+
+.manage-users-page .container {
+  width: 100%;
+  max-width: 520px;    
+}
+
+
+.manage-users-page .form {
   background-color: #ffffff;
   padding: 2rem;
   border-radius: 12px;
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
-  width: 420px;
-  max-width: 95vw;
+
   display: flex;
   flex-direction: column;
   align-items: stretch;
 }
 
-.title {
-  margin-bottom: 1.5rem;
+
+.manage-users-page .title {
+  margin: 0 0 1rem 0;
   text-align: center;
   font-size: 1.6rem;
   color: #2f3542;
 }
 
-.button {
+
+.manage-users-page .button {
   padding: 10px;
   background-color: #3742fa;
   color: white;
@@ -46,23 +49,25 @@ body {
   width: 100%;
 }
 
-.button:hover {
+.manage-users-page .button:hover {
   background-color: #2f3ed4;
 }
 
-.user-list {
+
+.manage-users-page .user-list {
   margin: 0.5rem 0 0;
   list-style: none;
   padding: 0;
   width: 100%;
-  max-height: 60vh;
+  max-height: 60vh;     
   overflow-y: auto;
 }
 
-.user-item {
+
+.manage-users-page .user-item {
   background: #f7f7f7;
   padding: 0.8rem;
-  padding-right: 40px;
+  padding-right: 40px;  
   border-radius: 6px;
   box-shadow: 0 0 5px rgba(0,0,0,0.05);
   margin-bottom: 0.5rem;
@@ -70,10 +75,11 @@ body {
   flex-direction: column;
   gap: 0.25rem;
   font-size: 0.95rem;
-  position: relative;
+  position: relative;   
 }
 
-.deletable .delete-btn {
+
+.manage-users-page .deletable .delete-btn {
   position: absolute;
   top: 6px;
   right: 6px;
@@ -91,11 +97,21 @@ body {
   z-index: 1;
 }
 
-.deletable .delete-btn:hover {
+.manage-users-page .deletable .delete-btn:hover {
   filter: brightness(0.9);
 }
 
-.deletable .delete-btn:focus-visible {
+.manage-users-page .deletable .delete-btn:focus-visible {
   outline: 2px solid #2f3ed4;
   outline-offset: 2px;
+}
+
+
+@media (max-width: 480px) {
+  .manage-users-page {
+    padding: 16px;
+  }
+  .manage-users-page .form {
+    padding: 1.25rem;
+  }
 }
