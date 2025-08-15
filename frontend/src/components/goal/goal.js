@@ -46,8 +46,6 @@ function Goal() {
 
   return (
     <div className="container">
-      <h1 className="title">Enter your goal</h1>
-
       <form className="form" onSubmit={saveGoal}>
         <input
           className="input"
