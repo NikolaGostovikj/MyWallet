@@ -176,9 +176,6 @@ export default function Bank() {
             <div className="news-desc">Markets</div>
           </a>
         </div>
-        <p className="news-note">
-          These open in a new tab. Big publishers usually block embedding via iframe.
-        </p>
       </section>
 
       <footer className="footer">
