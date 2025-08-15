@@ -14,7 +14,11 @@ alert.post("/check-bank", async (req, res) => {
     const amount = Number(await DB.getUserAmount(userId)) || 0;
     const goals = await DB.goalsByUserId(userId);
     const now = new Date();
-
+    if(amount < THRESHOLD){
+      const msg = `Low balance (€${amount.toFixed(2)}).`;
+      await DB.addAlert(userId, msg, "warning", "new");
+      return res.json({ success: true, message: msg, type: "warning" });
+    }
     
     if (amount < THRESHOLD && goals.some(g => new Date(g.deadline) > now && amount < g.target_amount)) {
       const msg = `Low balance (€${amount.toFixed(2)}). You have pending goals.`;
